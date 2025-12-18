@@ -14,6 +14,7 @@ def main():
     p.add_argument("--name", default="train")
     p.add_argument("--mlflow_uri", default="http://localhost:5000")
     p.add_argument("--experiment", default="haerujil-yolo")
+    p.add_argument("--device", default="0", help="CUDA device (e.g. 0, 0,1 or cpu)")
     args = p.parse_args()
 
     mlflow.set_tracking_uri(args.mlflow_uri)
@@ -32,6 +33,7 @@ def main():
             "batch": args.batch,
             "project": args.project,
             "name": args.name,
+            "device": args.device,
         })
 
         results = yolo.train(
@@ -41,6 +43,7 @@ def main():
             batch=args.batch,
             project=args.project,
             name=args.name,
+            device=args.device,
         )
 
         # Ultralytics가 저장한 run 폴더 찾기
