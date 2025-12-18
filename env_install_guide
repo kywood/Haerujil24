@@ -1,0 +1,25 @@
+
+## wsl 에서 nvidia-smi 안될때
+
+## GPU / WSL 환경 설정 (NVIDIA + WSL2)
+
+### 1. 환경 정보
+- OS: Windows 10/11
+- WSL: Ubuntu 24.04 (WSL2)
+- GPU: NVIDIA GeForce RTX 4060
+- Windows NVIDIA Driver: 560.94
+- CUDA (WSL): 12.6
+- nvidia-utils (WSL): 535.274.02
+
+---
+
+### 2. WSL에서 NVIDIA 유틸 설치
+
+> ⚠️ WSL에서는 **NVIDIA 드라이버를 설치하지 않고**,  
+> `nvidia-utils`만 설치한다.
+
+```bash
+sudo rm -rf /var/lib/apt/lists/*
+sudo apt clean
+sudo apt update
+sudo apt install -y nvidia-utils-535
