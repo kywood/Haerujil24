@@ -1,7 +1,20 @@
 import os
+os.environ["MLFLOW_DISABLED"] = "true"
+
 import argparse
 import mlflow
 from ultralytics import YOLO
+import boto3
+
+def s3_upload(local_path: str, bucket: str, key: str, endpoint_url: str, access_key: str, secret_key: str, region: str = "us-east-1"):
+    s3 = boto3.client(
+        "s3",
+        endpoint_url=endpoint_url,
+        aws_access_key_id=access_key,
+        aws_secret_access_key=secret_key,
+        region_name=region,
+    )
+    s3.upload_file(local_path, bucket, key)
 
 def main():
     p = argparse.ArgumentParser()
@@ -15,7 +28,17 @@ def main():
     p.add_argument("--mlflow_uri", default="http://localhost:5000")
     p.add_argument("--experiment", default="haerujil-yolo")
     p.add_argument("--device", default="0", help="CUDA device (e.g. 0, 0,1 or cpu)")
+
+    p.add_argument("--s3_endpoint", default="http://127.0.0.1:9000")
+    p.add_argument("--s3_bucket", default="mlflow")
+    p.add_argument("--s3_prefix", default="yolo-artifacts")  # 버킷 아래 폴더
+    p.add_argument("--s3_access_key", default="oracle")
+    p.add_argument("--s3_secret_key", default="oracleoracle")
+    p.add_argument("--s3_region", default="us-east-1")
+
     args = p.parse_args()
+
+    os.environ["MLFLOW_DISABLED"] = "true"
 
     mlflow.set_tracking_uri(args.mlflow_uri)
     mlflow.set_experiment(args.experiment)
@@ -23,7 +46,7 @@ def main():
     # YOLO 학습
     yolo = YOLO(args.model)
 
-    with mlflow.start_run(run_name=f"{os.path.basename(args.model)}_e{args.epochs}_b{args.batch}_s{args.imgsz}"):
+    with mlflow.start_run(run_name=f"{os.path.basename(args.model)}_e{args.epochs}_b{args.batch}_s{args.imgsz}") as run:
         # 파라미터 기록
         mlflow.log_params({
             "model": args.model,
@@ -46,16 +69,12 @@ def main():
             device=args.device,
         )
 
-        # Ultralytics가 저장한 run 폴더 찾기
-        save_dir = getattr(results, "save_dir", None)
-        if save_dir is None:
-            # fallback (대부분 save_dir 존재)
-            save_dir = os.path.join(args.project, args.name)
+        run_id = run.info.run_id
+        # run_id = mlflow.active_run().info.run_id
 
-        save_dir = str(save_dir)
+        save_dir = str(getattr(results, "save_dir", os.path.join(args.project, args.name)))
 
-        # 대표 메트릭(가능하면 기록)
-        # (Ultralytics 버전에 따라 키가 조금씩 다를 수 있음)
+        # metrics 기록(가능하면)
         try:
             metrics = results.results_dict if hasattr(results, "results_dict") else {}
             for k, v in metrics.items():
@@ -64,26 +83,27 @@ def main():
         except Exception:
             pass
 
-        # 아티팩트 업로드: best.pt / last.pt / plots 등
+        # ✅ weights/plots는 MinIO(S3)로 직접 업로드
+
+        base_prefix = f"{args.s3_prefix}/{args.experiment}/{run_id}"
+
         # weights
         weights_dir = os.path.join(save_dir, "weights")
         for fn in ["best.pt", "last.pt"]:
             fp = os.path.join(weights_dir, fn)
             if os.path.exists(fp):
-                mlflow.log_artifact(fp, artifact_path="weights")
+                key = f"{base_prefix}/weights/{fn}"
+                s3_upload(fp, args.s3_bucket, key, args.s3_endpoint, args.s3_access_key, args.s3_secret_key, args.s3_region)
 
-        # plots/results
-        for fn in ["results.png", "confusion_matrix.png", "confusion_matrix_normalized.png"]:
+        # plots
+        for fn in ["results.png", "confusion_matrix.png", "confusion_matrix_normalized.png", "args.yaml"]:
             fp = os.path.join(save_dir, fn)
             if os.path.exists(fp):
-                mlflow.log_artifact(fp, artifact_path="plots")
+                key = f"{base_prefix}/misc/{fn}"
+                s3_upload(fp, args.s3_bucket, key, args.s3_endpoint, args.s3_access_key, args.s3_secret_key, args.s3_region)
 
-        # args.yaml도 같이 올리면 재현성 좋아짐
-        args_yaml = os.path.join(save_dir, "args.yaml")
-        if os.path.exists(args_yaml):
-            mlflow.log_artifact(args_yaml, artifact_path="meta")
-
-        print(f"[OK] Logged to MLflow. save_dir={save_dir}")
+        print(f"[OK] MLflow run={run_id}, save_dir={save_dir}")
+        print(f"[OK] Uploaded to s3://{args.s3_bucket}/{base_prefix}/ ...")
 
 if __name__ == "__main__":
     main()
