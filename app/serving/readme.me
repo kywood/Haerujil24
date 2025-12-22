@@ -1,0 +1,16 @@
+실행
+pip install -r requirements.txt
+bash run.sh
+
+
+health
+curl http://127.0.0.1:8000/health
+
+predict
+curl -X POST "http://127.0.0.1:8000/predict?conf=0.25&iou=0.5&imgsz=640&device=auto" \
+  -F "file=@test.jpg"
+
+
+모델 핫스왑(다른 run_id의 best로 교체)
+curl -X POST "http://127.0.0.1:8000/reload?run_id=다른RUNID"
+
