@@ -30,4 +30,3 @@ python testCode/train.py \
 --s3_endpoint http://127.0.0.1:9000   \
 --s3_bucket mlflow   \
 --s3_prefix artifacts
-
