@@ -17,17 +17,17 @@ minio 추가
 pwd>> Haerujil24/app/training
 
 python testCode/train.py \
-  --data coco128.yaml \
-  --model yolov8n.pt \
-  --imgsz 640 \
-  --epochs 5 \
-  --batch 16 \
-  --device 0 \
-  --mlflow_uri http://localhost:5000 \
-  --experiment haerujil-yolo-s3 \
-  --project runs \
-  --name coco_test_s3
-
-./mlflow 에서 학습 결과를 minio 에 적어야되는데 접속을 못하고 있음
-
+--data coco128.yaml \
+--model yolov8n.pt  \
+--imgsz 640  \
+--epochs 5  \
+--batch 16  \
+--device 0   \
+--mlflow_uri http://127.0.0.1:5000   \
+--experiment haerujil-yolo-s3   \
+--project runs   \
+--name coco_test_s3   \
+--s3_endpoint http://127.0.0.1:9000   \
+--s3_bucket mlflow   \
+--s3_prefix artifacts
 
