@@ -52,3 +52,6 @@ uvicorn.log
 *.bak
 *.tmp
 *.old
+
+
+runs/
