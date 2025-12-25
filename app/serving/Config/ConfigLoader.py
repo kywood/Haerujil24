@@ -1,14 +1,24 @@
 import os
 import configparser
+import threading
 from typing import Optional
 
+from Utils.Singleton import SingletonBase
 
-class ConfigLoader:
+
+class ConfigLoader(SingletonBase):
     def __init__(self, path: str = "config.ini"):
+        super().__init__()
+
+
         self.path = path
         self._config = configparser.ConfigParser()
 
-    def load(self) :
+        self._load()
+
+        # self._lock = threading.Lock()
+
+    def _load(self) :
         if not os.path.exists(self.path):
             raise FileNotFoundError(f"Config file not found: {self.path}")
 

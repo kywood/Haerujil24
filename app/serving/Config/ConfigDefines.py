@@ -1,15 +1,17 @@
-from Defs.IEnum import IENUM
+from Defines.IEnum import IENUM
 
 
 class ConfigDefine:
 
     class E_SECTION(IENUM):
+        APP="APP"
         MINIO="MINIO"
 
         YOLO_MODEL = "YOLO_MODEL"
         SERVING_RUNTIME="SERVING_RUNTIME"
         SECURITY="SECURITY"
         SERVER="SERVER"
+        INFERENCE_MODEL="INFERENCE_MODEL"
 
 
 
@@ -43,6 +45,12 @@ class ConfigDefine:
         HOST="HOST"
         PORT="PORT"
         WORKERS="WORKERS"
+        pass
+
+    class E_INFERENCE_MODEL(IENUM):
+        CACHE_PATH="CACHE_PATH"
+        MODEL_URL="MODEL_URL"
+        MODEL_URL_TEMPLATE="MODEL_URL_TEMPLATE"
         pass
 
     pass
