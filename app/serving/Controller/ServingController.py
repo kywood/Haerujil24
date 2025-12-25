@@ -8,12 +8,15 @@ class ServingController(IController):
     def __init__(self,config: ConfigLoader):
         super().__init__()
 
-        self.config = config
+        self._config = config
 
-        self.s3_endpoint = config.get("MINIO", "S3_ENDPOINT")
-        self.s3_bucket = config.get("MINIO", "S3_BUCKET")
-        self.s3_access_key = config.get("MINIO", "S3_ACCESS_KEY")
-        self.s3_secret_key = config.get("MINIO", "S3_SECRET_KEY")
+        from Dtos.S3Dto import S3ConnectDto
+        self._s3ConnetctionDTO = S3ConnectDto().SetDTOFromConfig(config)
+
+        # self.s3_endpoint = config.get("MINIO", "S3_ENDPOINT")
+        # self.s3_bucket = config.get("MINIO", "S3_BUCKET")
+        # self.s3_access_key = config.get("MINIO", "S3_ACCESS_KEY")
+        # self.s3_secret_key = config.get("MINIO", "S3_SECRET_KEY")
 
         self.run_id = config.get("YOLO_MODEL", "RUN_ID")
         self.default_device = config.get("SERVING_RUNTIME", "YOLO_DEVICE", "auto")

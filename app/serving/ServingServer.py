@@ -20,18 +20,16 @@ def create_app() -> FastAPI:
     from Controller.ServingController import ServingController
     from Config.ConfigLoader import ConfigLoader
 
-    config = ConfigLoader("config.ini")
-    config.load()
+    config = ConfigLoader.instance()
 
-    server = ServingServer(title="Haerujil24 Serving")
+
+    server = ServingServer(title=config.get('APP','NAME'))
     server.add_controller(ServingController(config))
     app = server.build()
     return app
 
 
 app = create_app()
-
-
 
 
 def main():
@@ -43,7 +41,7 @@ def main():
     workers = int(os.getenv("WORKERS", "1"))  # GPU 서빙이면 1 권장
 
     uvicorn.run(
-        "ServingServer:app",   # main.py 안의 app
+        app,
         host=host,
         port=port,
         workers=workers,
