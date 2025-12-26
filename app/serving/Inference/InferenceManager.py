@@ -99,8 +99,33 @@ class InferenceManager(SingletonBase):
             f"[InferenceManager] Loading model: {localModelPath} "
             f"(device={self._device})"
         )
+        # print("[InferenceManager] torch.cuda.is_available():", torch.cuda.is_available())
+        # print("[InferenceManager] model param device:", next(self._model.model.parameters()).device)
 
         self._model = YOLO(str(localModelPath))
+
+        try:
+            self._model.to(self._device)
+            print(f"[InferenceManager] model.to({self._device}) OK")
+        except RuntimeError as e:
+            print("[InferenceManager] model.to(device) FAILED:", e)
+            print("[InferenceManager][ERROR] model.to(device) RuntimeError:", e)
+
+            if self._device.startswith("cuda"):
+                print("[InferenceManager] Fallback to CPU")
+                self._device = "cpu"
+                self._model.to("cpu")
+            else:
+                raise  # CPU도 실패면 서버 띄울 이유 없음
+        except Exception as e:
+            # 🔥 예상 못한 에러
+            print("[InferenceManager][FATAL] model.to(device) failed:", e)
+            raise  # 이건 숨기면 안 됨
+
+        print("[InferenceManager] torch.cuda.is_available():", torch.cuda.is_available())
+        print("[InferenceManager] model param device:", next(self._model.model.parameters()).device)
+
+        pass
 
     def infer(self, image):
         """
