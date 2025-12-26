@@ -5,6 +5,9 @@ __pycache__/
 *.pyd
 *.py.class
 
+
+.cache
+
 # ---- Virtual Environments ----
 
 venv_win/
