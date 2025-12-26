@@ -14,13 +14,22 @@ class ServingServer:
         for c in self._controllers:
             c.register(self.app)
         return self.app
+#
+#
+# def InitializeSingleton():
+#
+#
+#     pass
 
 
 def create_app() -> FastAPI:
     from Controller.ServingController import ServingController
     from Config.ConfigLoader import ConfigLoader
 
+    from Inference.InferenceManager import InferenceManager
+
     config = ConfigLoader.instance()
+    InferenceManager.instance(config).Initialize()
 
 
     server = ServingServer(title=config.get('APP','NAME'))

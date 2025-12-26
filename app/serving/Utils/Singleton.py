@@ -1,4 +1,5 @@
 import threading
+from abc import abstractmethod
 from typing import Any, Dict, Tuple
 
 
@@ -37,3 +38,5 @@ class SingletonBase:
                 finally:
                     cls._creating.remove(cls)
         return inst
+
+    def Initialize(self): pass

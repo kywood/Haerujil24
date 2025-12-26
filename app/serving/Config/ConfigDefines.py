@@ -51,6 +51,7 @@ class ConfigDefine:
         CACHE_PATH="CACHE_PATH"
         MODEL_URL="MODEL_URL"
         MODEL_URL_TEMPLATE="MODEL_URL_TEMPLATE"
+        MODEL_NAME = "MODEL_NAME"
         pass
 
     pass
