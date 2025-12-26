@@ -1,0 +1,5 @@
+app/serving/.cache/
+
+# tools binaries
+/tools/
+*.exe
