@@ -1,0 +1,36 @@
+
+
+  15 pip install -U build
+  16 python -m build
+  17 pip install -U twine
+  18 pip list
+  19 pip freeze > requirements.txt
+  20 twine upload --repository-url http://localhost:8081/repository/pypi-haerujil/ dist/*
+
+
+
+-- Windows
+
+C:\Users\<사용자>\AppData\Roaming\pip
+pip.conf
+
+[global]
+index-url = http://localhost:8081/repository/pypi-group/simple
+trusted-host = localhost
+
+-- Linux
+ cat ~/.config/pip/pip.conf
+[global]
+index-url = http://localhost:8081/repository/pypi-group/simple
+trusted-host = localhost
+
+
+
+-- 빌드 및 배포 방법
+1. .env 에 버전 올리기
+2. 반드시 리눅스 에서 bash build.sh 실행 할것
+
+
+
+
+
