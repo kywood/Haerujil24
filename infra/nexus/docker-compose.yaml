@@ -1,0 +1,36 @@
+services:
+  nexus:
+    image: sonatype/nexus3:latest
+    container_name: nexus
+    restart: unless-stopped
+
+    ports:
+      - "8081:8081"   # Nexus Web UI + PyPI endpoint (HTTP)
+
+    environment:
+      # 개발용 JVM 메모리 (PC 사양에 맞게 조절 가능)
+      # 너무 낮으면 Nexus가 느리거나 죽음
+      INSTALL4J_ADD_VM_PARAMS: >
+        -Xms512m
+        -Xmx1024m
+        -XX:MaxDirectMemorySize=1024m
+        -Djava.util.prefs.userRoot=/nexus-data/javaprefs
+
+    volumes:
+      - ./nexus_data:/nexus-data
+
+  # Nexus 기동 대기용 (1회 실행, 안내용)
+  nexus_init:
+    image: curlimages/curl:latest
+    container_name: nexus_init
+    depends_on:
+      - nexus
+    restart: "no"
+    entrypoint: >
+      /bin/sh -c "
+      echo 'Waiting for Nexus...';
+      until curl -fsS http://nexus:8081/ >/dev/null 2>&1; do sleep 2; done;
+      echo 'Nexus is up!';
+      echo 'URL: http://localhost:8081';
+      echo 'Admin password: docker exec -it nexus cat /nexus-data/admin.password';
+      "
