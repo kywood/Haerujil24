@@ -5,12 +5,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
+
+# pip.conf 추가 (Nexus 설정)
+COPY Deploy/pip.conf /etc/pip.conf
+
 WORKDIR /app
 
-COPY requirements.txt /app/requirements.txt
+COPY . /app
+
+#COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
-COPY build_dataset.py /app/build_dataset.py
+#COPY build_dataset.py /app/build_dataset.py
 
 # 컨테이너 실행 시 python 스크립트가 바로 실행되게
-ENTRYPOINT ["python", "/app/build_dataset.py"]
+#ENTRYPOINT ["python", "/app/build_dataset.py"]
+ENTRYPOINT ["python"]
+CMD ["/app/build_dataset.py"]
