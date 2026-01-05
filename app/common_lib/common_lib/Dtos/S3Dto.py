@@ -1,3 +1,5 @@
+from common_lib.Dtos.IDto import IDTO
+
 
 class S3Dto(IDTO):
 
