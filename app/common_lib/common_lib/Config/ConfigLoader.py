@@ -27,26 +27,26 @@ class ConfigLoader(SingletonBase):
     # ----------------------------
     # Getter APIs
     # ----------------------------
-    def get(self, section: str, key: str, default: Optional[str] = None) -> str:
+    def Get(self, section: str, key: str, default: Optional[str] = None) -> str:
         if self._config.has_option(section, key):
             return self._config.get(section, key)
         if default is not None:
             return default
         raise KeyError(f"Config not found: [{section}] {key}")
 
-    def get_int(self, section: str, key: str, default: Optional[int] = None) -> int:
+    def GetInt(self, section: str, key: str, default: Optional[int] = None) -> int:
         if self._config.has_option(section, key):
             return self._config.getint(section, key)
         if default is not None:
             return default
         raise KeyError(f"Config not found: [{section}] {key}")
 
-    def get_bool(self, section: str, key: str, default: Optional[bool] = None) -> bool:
+    def GetBool(self, section: str, key: str, default: Optional[bool] = None) -> bool:
         if self._config.has_option(section, key):
             return self._config.getboolean(section, key)
         if default is not None:
             return default
         raise KeyError(f"Config not found: [{section}] {key}")
 
-    def has(self, section: str, key: str) -> bool:
+    def Has(self, section: str, key: str) -> bool:
         return self._config.has_option(section, key)
