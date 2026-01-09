@@ -53,6 +53,9 @@ class ServingController(IController):
             return PingResponse(response=ResponseHeader(code=1,message="dd"),  name="a" , age=10)
 
 
+
+
+
         from Models.RestModel import InferResponse
         @app.post("/infer" , response_model=InferResponse)
         async def infer(request: Request,file: UploadFile = File(...)):

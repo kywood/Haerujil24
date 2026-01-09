@@ -23,16 +23,16 @@ class MinioConnection(ObjectStorageConnection):
 
     def __init__(self ,
                  endpoint ,
-                 bucket ,
-                 access_key ,
-                 secret_access_key ,
+                 user_name ,
+                 password ,
                  region_name
                  ):
 
+        super().__init__()
+
         self.endpoint = endpoint
-        self.bucket = bucket
-        self.access_key = access_key
-        self.secret_access_key = secret_access_key
+        self.access_key = user_name
+        self.secret_access_key = password
         self.region_name = region_name
 
         pass

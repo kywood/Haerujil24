@@ -1,4 +1,6 @@
-from common_lib.Utils.PathUtil import PathUtil
+
+
+
 
 
 def main():
@@ -10,7 +12,7 @@ def main():
         region_name="us-east-1"
     )
 
-    bucket_name= "test-bucket"
+    bucket_name= "haerujil"
 
     with con.con() as session :
         storage = session.storage(bucket_name)
@@ -19,7 +21,8 @@ def main():
         #     print(k)
         #
         #
-        path = PathUtil.dir("train2017")
+        from common_lib.Utils.PathUtil import PathUtil
+        path = PathUtil.Dir("unnormal")
         # path = PathUtil.file("train2017")
         # 또는
         lists = list(storage.ls(prefix=path))
@@ -39,8 +42,9 @@ def main():
         # lists = storage.delete(key=path)
         # print(lists)
         #
-        # path = PathUtil.dir("train2017","korea")
-        # # storage.mkdir(key=path)
+        # path = PathUtil.dir("normal")
+        # storage.mkdir(key=path)
+
         #
         # path = PathUtil.dir("train2017","korea")
         # storage.delete(key=path)
