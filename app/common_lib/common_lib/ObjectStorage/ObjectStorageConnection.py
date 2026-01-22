@@ -8,6 +8,7 @@ from common_lib.ObjectStorage.ObjectStorageSession import ObjectStorageSession, 
 class ObjectStorageConnection(IDTO):
 
     def __init__(self):
+        super().__init__()
 
         pass
 
