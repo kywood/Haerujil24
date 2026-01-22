@@ -14,7 +14,7 @@ class abThreadingControlled ( abThreading , ABC ):
 
         try:
             while not self.IsStop():
-                self.Action()
+                self.HandleThread()
                 time.sleep(self._sleep_time)
         except Exception as e:
             print(f"error:{e}")
@@ -28,6 +28,6 @@ class abThreadingControlled ( abThreading , ABC ):
         pass
 
     @abstractmethod
-    def Action(self):
+    def HandleThread(self):
         print("abThreading ")
         pass

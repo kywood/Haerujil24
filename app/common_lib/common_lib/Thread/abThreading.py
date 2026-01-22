@@ -16,11 +16,11 @@ class abThreading ( abThread, ABC):
 
     def run(self):
         while not self.IsStop():
-            self.Action()
+            self.HandleThread()
             time.sleep(self._sleep_time)
 
     @abstractmethod
-    def Action(self):
+    def HandleThread(self):
         print("abThreading ")
         pass
 

@@ -2,6 +2,7 @@ import threading
 from abc import abstractmethod, ABC
 from enum import Enum
 
+from common_lib.Enum.IENUM import IENUM
 
 
 class cThreadEvent:
@@ -19,16 +20,21 @@ class cThreadEvent:
         return self.vset
 
 
+class E_THREAD_STATUS(IENUM):
+    WAITING = 0
+    RUNNING = 1
+    STOPING = 2
+    STOPPED = 3
+
+
 class abThread ( threading.Thread , cThreadEvent , ABC ):
-    class E_THREAD_STATUS(Enum):
-        WAITING = 0
-        RUNNING = 1
-        STOPING = 2
+
+
     def __init__( self ):
         threading.Thread.__init__(self)
         cThreadEvent.__init__(self)
 
-        self.thread_status = abThread.E_THREAD_STATUS.WAITING
+        self.thread_status = E_THREAD_STATUS.WAITING
         # super( abThread , self ).__init__()
         # self._stop = threading.Event()
         # self.thread_status = abThread.E_THREAD_STATUS.WAITING
@@ -48,7 +54,7 @@ class abThread ( threading.Thread , cThreadEvent , ABC ):
     def Stop(self):
         # self._stop.set()
         self.evt_set()
-        self.setThreadStatus(abThread.E_THREAD_STATUS.STOPING)
+        self.setThreadStatus(E_THREAD_STATUS.STOPING)
 
     def IsStop(self):
         return self.evt_is_set()
@@ -61,14 +67,14 @@ class abThread ( threading.Thread , cThreadEvent , ABC ):
         self.start()
         self.evt_clear()
         # self._stop.clear()
-        self.setThreadStatus(abThread.E_THREAD_STATUS.RUNNING)
+        self.setThreadStatus(E_THREAD_STATUS.RUNNING)
 
     def run(self):
-        self.Action()
+        self.HandleThread()
         self.Stop()
 
     @abstractmethod
-    def Action(self):
+    def HandleThread(self):
         print("abThread ")
         pass
 
