@@ -3,10 +3,12 @@ from common_lib.Enum.IENUM import IENUM
 
 class E_CHANNEL_TYPE(IENUM):
 
+    NONE =  -1
     SERVER = 0
     CLIENT = 1
 
     _name_map = {
+        NONE: 'None',
         SERVER: 'Server',
         CLIENT: 'Client',
     }

@@ -100,7 +100,8 @@ class EventProcess(abProcess):
             while self._isRunning:
 
                 self.CallProcessing(process)
-                time.sleep(0.2)
+                # time.sleep(0.02)
+                time.sleep(0.0)
 
             self._setStop()
         except Exception as e:
@@ -152,14 +153,15 @@ class cTestProcess(EventProcess):
     pass
 
 class eventBusProcess(EventProcess):
-## TODO 100
+### TODO 100
 ## parent mp
 
     def __init__(self ,
+                 name:str,
                  messageQueue : IMessageQueue ,
                  channelDtos :List[ChannelDTO],
                  messageHandler : MessageHandler ):
-        super().__init__(name="")
+        super().__init__(name=name)
 
         self._messageQueue = messageQueue
         # self._channelLists = channelLists
@@ -186,44 +188,3 @@ class eventBusProcess(EventProcess):
         )
         pass
 
-
-class cProducerProcess(eventBusProcess):
-
-    def __init__(self,
-                 messageQueue: IMessageQueue,
-                 channelDtos: List[ChannelDTO],
-                 messageHandler: MessageHandler
-                 ):
-        super().__init__(messageQueue , channelDtos ,messageHandler )
-        pass
-
-    def CallProcessing(self, process):
-        print("cProducerProcess :: CallProcessing Send >> ")
-        self.GetEventBus().Send("COMQ", "Send Message >>>>>>>>>>>>>>>>  ")
-        ## packet produsing
-        pass
-    pass
-
-class cConsumerProcess(eventBusProcess):
-
-    def __init__(self,
-                 messageQueue: IMessageQueue,
-                 channelDtos: List[ChannelDTO],
-                 messageHandler: MessageHandler
-                 ):
-        super().__init__(messageQueue , channelDtos ,messageHandler)
-        pass
-
-    #
-    def CallProcessing(self, process):
-
-        print("cConsumerProcess :: CallProcessing~")
-
-        # self.GetEventBus().Send("COMQ" ,"protocol" )
-
-        ## packet consumeing
-
-
-        pass
-
-    pass
