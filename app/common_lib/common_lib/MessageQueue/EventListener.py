@@ -69,14 +69,10 @@ class EventListener(ListenThread):
             # while not self.IsStopReq():
             while not self.IsStop():
                 try:
-                    print("-------------")
-
                     self.runAct()
                 except Exception as e:
                     print(f" except Exception as e : {e}")
                     pass
-
-            # from ody_lib.threads.abThread import abThread
 
             from common_lib.Thread.abThread import E_THREAD_STATUS
             self.setThreadStatus(E_THREAD_STATUS.STOPPED)
@@ -91,12 +87,13 @@ class EventListener(ListenThread):
             self.setThreadStatus(abThread.E_THREAD_STATUS.STOPPED)
             raise e
 
-    # @abstractmethod
     def runAct(self):
         ## 이부분에선 queue 를 선회 하면서
         
         import time
         import json
+
+        sleepTime=0.03
         
         for channel_name in self._channelContainer:
 
@@ -113,12 +110,14 @@ class EventListener(ListenThread):
             # print(f">>>>>>>>>>>>>>>>>>runAct protocol :: channel_name:{channel_name} {protocol}")
 
             if protocol == None:
-                time.sleep(2)
+                time.sleep(sleepTime)
                 continue
 
             # print(f" eventListener : runAct : chnm : {channel_name} P : {protocol}")
 
-            print(f" [Recv] protocol : {protocol}")
+            # print(f" [Recv] pnm : {self._eventBus.GetParentProcess().GetName()}  protocol : {protocol}")
+
+            self._messageHandler.ProtocolHandle(protocol)
 
             # jsons = json.loads(protocol)
 
@@ -132,8 +131,7 @@ class EventListener(ListenThread):
             #     continue
             #
             # handler(protocol)
-        
-            time.sleep(0.1)
+            time.sleep(0.01)
 
         pass
     pass

@@ -50,25 +50,6 @@ class MultiProcesser(abThread , abProcess):
         # self.process_size=_process_size
         self._lock = multiprocessing.Lock()
 
-        # self.shardQueue = multiprocessing.Manager().dict()
-        # self.shardQueuelock = multiprocessing.Lock()
-
-        #
-        # self.shardQueueEx = Manager().dict()
-        # self.shardQueueExlock = multiprocessing.Lock()
-        #
-        # self.shardJobQueue = Manager().Queue()
-        # self.shardJobQueuelock = multiprocessing.Lock()
-        #
-        # self.shardJobQueueMpM = Manager().Queue()
-        # self.shardJobQueueMpMlock = multiprocessing.Lock()
-        #
-        # ##append data channel
-        # self.sharedDataChannel = Manager().dict()
-        # self.sharedDataChannelLock = multiprocessing.Lock()
-        #
-        # ## APPEND SHARD_CONFIG
-        # self.shardConfigQueue = Manager().dict()
         return self
 
     def ShutDown(self):

@@ -1,11 +1,18 @@
+from abc import abstractmethod, ABC
+
 
 class IMessageHandler:
     def __init__(self):
         pass
 
+
+    @abstractmethod
+    def ProtocolHandle(self , protocol):
+        pass
+
     pass
 
-class MessageHandler(IMessageHandler):
+class abMessageHandler(IMessageHandler , ABC ):
 
     def __init__(self):
         super().__init__()
@@ -31,3 +38,17 @@ class MessageHandler(IMessageHandler):
 
     def Register(self, handlers: dict):
         self._handlerLists.Register(handlers)
+
+    @abstractmethod
+    def ProtocolHandle(self , protocol):
+        print(f"abMessageHandler :: {protocol}")
+        pass
+
+class MessageHandler(abMessageHandler):
+
+    def __init__(self):
+        super().__init__()
+
+    def ProtocolHandle(self , protocol):
+        print( f"MessageHandler :: {protocol}" )
+        pass
