@@ -1,4 +1,3 @@
-from common_lib.MessageQueue.QueueType import E_QUEUE_TYPE
 
 
 def main():
@@ -6,17 +5,13 @@ def main():
     from common_lib.MessageQueue.ChannelDTO import ChannelDTO
     from common_lib.MessageQueue.ChannelType import E_CHANNEL_TYPE
 
-    from common_lib.MessageQueue.ChannelDTO import ChannelQueueDTO
-    messageQueue = MpMessageQueue(channel_queue_dtos=[
-                                    ChannelQueueDTO(
+
+    messageQueue = MpMessageQueue(channel_dtos=[
+                                   ChannelDTO(
                                        channel_name="COMQ",
-                                       queue_type=E_QUEUE_TYPE.QUEUE
-                                    ) ,
-                                    ChannelQueueDTO(
-                                        channel_name="PQ",
-                                        queue_type=E_QUEUE_TYPE.HSET
-                                    ),
-                                ] )
+                                       channel_type=E_CHANNEL_TYPE.NONE
+                                   )
+                               ] )
 
     from common_lib.multiProcess.MultiProcesser import MultiProcesser
     mp = MultiProcesser(messageQueue)
@@ -28,16 +23,11 @@ def main():
 
     from common_lib.MessageQueue.MessageHandler import MessageHandler
     from common_lib.TestCode.testProcess import cProducerProcess
-    from common_lib.MessageQueue.ChannelDTO import ChannelQueueDTO
     mp.Append(cProducerProcess(messageQueue=messageQueue ,
                                channelDtos=[
                                    ChannelDTO(
                                        channel_name="COMQ",
                                        channel_type=E_CHANNEL_TYPE.SERVER
-                                   ) ,
-                                   ChannelDTO(
-                                       channel_name="PQ",
-                                       channel_type=E_CHANNEL_TYPE.NONE
                                    )
                                ] ,
                                messageHandler=MessageHandler()
@@ -50,10 +40,6 @@ def main():
             ChannelDTO(
                 channel_name="COMQ",
                 channel_type=E_CHANNEL_TYPE.CLIENT
-            ),
-            ChannelDTO(
-                channel_name="PQ",
-                channel_type=E_CHANNEL_TYPE.NONE
             )
         ],
         messageHandler=MessageHandler()
@@ -65,25 +51,21 @@ def main():
             ChannelDTO(
                 channel_name="COMQ",
                 channel_type=E_CHANNEL_TYPE.CLIENT
-            ),
-            ChannelDTO(
-                channel_name="PQ",
-                channel_type=E_CHANNEL_TYPE.NONE
             )
         ],
         messageHandler=MessageHandler()
     ))
-    # mp.Append(cConsumerProcess(
-    #     name="com3",
-    #     messageQueue=messageQueue,
-    #     channelDtos=[
-    #         ChannelDTO(
-    #             channel_name="COMQ",
-    #             channel_type=E_CHANNEL_TYPE.CLIENT
-    #         )
-    #     ],
-    #     messageHandler=MessageHandler()
-    # ))
+    mp.Append(cConsumerProcess(
+        name="com3",
+        messageQueue=messageQueue,
+        channelDtos=[
+            ChannelDTO(
+                channel_name="COMQ",
+                channel_type=E_CHANNEL_TYPE.CLIENT
+            )
+        ],
+        messageHandler=MessageHandler()
+    ))
 
     mp.Start()
 

@@ -1,3 +1,4 @@
+import time
 from typing import List
 
 from common_lib.MessageQueue.ChannelDTO import ChannelDTO
@@ -25,9 +26,14 @@ class cProducerProcess(eventBusProcess):
 
     def CallProcessing(self, process):
         # print("cProducerProcess :: CallProcessing Send >> ")
-        self.GetEventBus().Send("COMQ", f"Send Message >>>>>>>>>>>>>>>> {self._loop} ")
+        self.GetEventBus().Send("COMQ", f" COMQ >>>>>>>>>>>>>>>> {self._loop} ")
+
+        self.GetEventBus().Send("PQ", f" PQ >>>>>>>>>>>>>>>> {self._loop} ")
 
         self._loop=self._loop+1
+
+
+        time.sleep(1)
         ## packet produsing
         pass
     pass

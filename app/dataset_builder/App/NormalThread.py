@@ -9,19 +9,23 @@ class NormalThread(abThreadingControlled):
                          sleep_time=3)
         pass
 
-    def Action(self):
-        print("NormalThread ")
+    # def Action(self):
+    #     print("NormalThread ")
+    #
+    #     ## v파일있는지 확인
+    #     ## 있다면 가지고 와서
+    #     ## 그런다음 파일을 ...
+    #     ##
+    #
+    #
+    #
+    #
+    #
+    #     pass
 
-        ## v파일있는지 확인
-        ## 있다면 가지고 와서
-        ## 그런다음 파일을 ...
-        ##
 
-
-
-
-
+    def HandleThread(self):
+        print("abThreading ")
         pass
-
 
     pass

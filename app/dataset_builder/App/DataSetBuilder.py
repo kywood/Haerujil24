@@ -44,13 +44,35 @@ class DataSetBuilder:
             # path = PathUtil.file("train2017")
             # 또는
             lists = list(storage.ls(prefix=path))
+            print("================= lists =============")
             print(lists)
+            print("================= lists =============")
 
             ## list 를 구해서
             ##  안에 들어가서
 
             lists = list(storage.walk(prefix=path))
+            print("================= walks =============")
             print(lists)
+            print("================= walks =============")
+
+            from App.ObjectStorageUtils.ObjectStorageUtils import ObjectStorageUtils
+            for key in ObjectStorageUtils.GetFileName(storage,path , suffix="mp4"):
+                print(key)
+
+            # print(ll)
+
+            print("==============================")
+
+            rr=ObjectStorageUtils.GetFileName(storage, path, suffix="mp4")
+
+            rrlists = list(rr)
+
+            print(rrlists)
+
+
+
+
 
         pass
 
