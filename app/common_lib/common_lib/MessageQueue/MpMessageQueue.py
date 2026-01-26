@@ -1,16 +1,18 @@
 from queue import Empty
+from typing import List
 
+from common_lib.MessageQueue.ChannelDTO import ChannelQueueDTO
 from common_lib.MessageQueue.MessageQueue import abMessageQueue
 from multiprocessing import Queue, Lock
 
 
 class MpMessageQueue(abMessageQueue):
-    def __init__(self, channel_dtos ):
+    def __init__(self, channel_queue_dtos : List[ChannelQueueDTO]):
         super().__init__(None)
         self._qs = {}     # channel_name -> Queue
         self._locks = {}  # channel_name -> Lock
 
-        self._channelDtos=channel_dtos
+        self._channelQueueDtos=channel_queue_dtos
 
         self._init()
 
@@ -27,10 +29,13 @@ class MpMessageQueue(abMessageQueue):
 
         from common_lib.MessageQueue.PipeType import E_PIPE_TYPE
 
-        for channelDto in self._channelDtos:
+        for channelQueueDto in self._channelQueueDtos:
 
-            channelInName = E_PIPE_TYPE.GetChannelName(channelDto.channel_name , E_PIPE_TYPE.IN)
-            channelOutName = E_PIPE_TYPE.GetChannelName(channelDto.channel_name , E_PIPE_TYPE.OUT)
+            ## TODO 1
+            ## 이부분에서 반드시 해결해야 함....
+            ## 음 queue_type 에 따라 생성되는 큐가 달라하함 펙토리에 이부분을 입력할것.....
+            channelInName = E_PIPE_TYPE.GetChannelName(channelQueueDto.channel_name , E_PIPE_TYPE.IN)
+            channelOutName = E_PIPE_TYPE.GetChannelName(channelQueueDto.channel_name , E_PIPE_TYPE.OUT)
             self._qs[ channelInName ] = Queue()
             self._qs[ channelOutName ] = Queue()
 
