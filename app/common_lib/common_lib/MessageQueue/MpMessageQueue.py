@@ -3,18 +3,31 @@ from typing import List
 
 from common_lib.MessageQueue.ChannelDTO import ChannelQueueDTO
 from common_lib.MessageQueue.MessageQueue import abMessageQueue
-from multiprocessing import Queue, Lock
+from multiprocessing import Queue, Lock, Manager
 
 
 class MpMessageQueue(abMessageQueue):
     def __init__(self, channel_queue_dtos : List[ChannelQueueDTO]):
         super().__init__(None)
+
+        ## TODO
+        ## 이부분이 그냥 들가는게 아니라
+        ## 한번은 감싸서 들어 가야함.....
+
+
         self._qs = {}     # channel_name -> Queue
         self._locks = {}  # channel_name -> Lock
 
         self._channelQueueDtos=channel_queue_dtos
 
         self._init()
+
+    def GetQS(self):
+        return self._qs
+
+    def GetLocks(self):
+        return self._locks
+
 
     def _init(self):
 
@@ -28,19 +41,22 @@ class MpMessageQueue(abMessageQueue):
         #          }
 
         from common_lib.MessageQueue.PipeType import E_PIPE_TYPE
-
+        mm=Manager()
         for channelQueueDto in self._channelQueueDtos:
+            channelQueueDto.AssignQueue(self)
 
-            ## TODO 1
-            ## 이부분에서 반드시 해결해야 함....
-            ## 음 queue_type 에 따라 생성되는 큐가 달라하함 펙토리에 이부분을 입력할것.....
-            channelInName = E_PIPE_TYPE.GetChannelName(channelQueueDto.channel_name , E_PIPE_TYPE.IN)
-            channelOutName = E_PIPE_TYPE.GetChannelName(channelQueueDto.channel_name , E_PIPE_TYPE.OUT)
-            self._qs[ channelInName ] = Queue()
-            self._qs[ channelOutName ] = Queue()
 
-            self._locks[channelInName ] = Lock()
-            self._locks[channelOutName ] = Lock()
+            # ## 이부분에서 반드시 해결해야 함....
+            # ## 음 queue_type 에 따라 생성되는 큐가 달라하함 펙토리에 이부분을 입력할것.....
+            # channelInName = E_PIPE_TYPE.GetChannelName(channelQueueDto.channel_name , E_PIPE_TYPE.IN)
+            # channelOutName = E_PIPE_TYPE.GetChannelName(channelQueueDto.channel_name , E_PIPE_TYPE.OUT)
+            # self._qs[ channelInName ] = Queue()
+            # self._qs[ channelOutName ] = Queue()
+            #
+            # self._locks[channelInName ] = Lock()
+            # self._locks[channelOutName ] = Lock()
+            # pass
+
             pass
 
 

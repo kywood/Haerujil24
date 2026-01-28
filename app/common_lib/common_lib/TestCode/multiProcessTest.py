@@ -6,17 +6,19 @@ def main():
     from common_lib.MessageQueue.ChannelDTO import ChannelDTO
     from common_lib.MessageQueue.ChannelType import E_CHANNEL_TYPE
 
-    from common_lib.MessageQueue.ChannelDTO import ChannelQueueDTO
+    from common_lib.MessageQueue.ChannelDTO import ChannelQueueQueueDTO
+    from common_lib.MessageQueue.ChannelDTO import ChannelQueueHSetDTO
     messageQueue = MpMessageQueue(channel_queue_dtos=[
-                                    ChannelQueueDTO(
-                                       channel_name="COMQ",
-                                       queue_type=E_QUEUE_TYPE.QUEUE
+                                    ChannelQueueQueueDTO(
+                                       channel_name="COMQ"
                                     ) ,
-                                    ChannelQueueDTO(
-                                        channel_name="PQ",
-                                        queue_type=E_QUEUE_TYPE.HSET
+                                    ChannelQueueHSetDTO(
+                                        channel_name="PQ"
                                     ),
                                 ] )
+    
+    ## TODO 1
+    ## 이부분에서 실행을 할시 예외가 터짐
 
     from common_lib.multiProcess.MultiProcesser import MultiProcesser
     mp = MultiProcesser(messageQueue)
