@@ -94,28 +94,22 @@ class EventListener(ListenThread):
         import json
 
         sleepTime=0.03
+
+        from common_lib.MessageQueue.ChannelType import E_CHANNEL_TYPE
         
         for channel_name in self._channelContainer:
 
-
-            # print(f"runAct :: channel_name:{channel_name}")
-
             messageChannel = self._channelContainer.Get(channel_name)
 
-            # print(f">>>>>>>>>>>>>>>>>>runAct :: channel_name:{channel_name}")
+            if messageChannel.GetChannelType() is E_CHANNEL_TYPE.NONE:
+                time.sleep(sleepTime)
+                continue
 
-            # messageChannel = self._channelContainer[channel_name]
             protocol = messageChannel.Pop()
-
-            # print(f">>>>>>>>>>>>>>>>>>runAct protocol :: channel_name:{channel_name} {protocol}")
 
             if protocol == None:
                 time.sleep(sleepTime)
                 continue
-
-            # print(f" eventListener : runAct : chnm : {channel_name} P : {protocol}")
-
-            # print(f" [Recv] pnm : {self._eventBus.GetParentProcess().GetName()}  protocol : {protocol}")
 
             self._messageHandler.ProtocolHandle(protocol)
 
