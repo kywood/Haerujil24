@@ -2,6 +2,7 @@ import time
 from typing import List
 
 from common_lib.MessageQueue.ChannelDTO import ChannelDTO
+from common_lib.MessageQueue.IPCS.IPCController import IPC_Controller
 from common_lib.MessageQueue.MessageHandler import MessageHandler
 from common_lib.MessageQueue.MessageQueue import IMessageQueue
 
@@ -74,6 +75,11 @@ class EventProcess(abProcess):
         self._isRunning = False
         self.Stop()
 
+
+    def PostInit(self):
+
+        pass
+
     def GetRunning(self):
         return self._isRunning
 
@@ -108,9 +114,6 @@ class EventProcess(abProcess):
             self._setStop()
             raise e
 
-    def PostInit(self):
-
-        pass
 
     def SetEventBus(self, event_bus):
         self._eventBus = event_bus
@@ -158,21 +161,25 @@ class eventBusProcess(EventProcess):
 
     def __init__(self ,
                  name:str,
-                 messageQueue : IMessageQueue ,
+                 ipcController: IPC_Controller ,
                  channelDtos :List[ChannelDTO],
                  messageHandler : MessageHandler ):
         super().__init__(name=name)
 
-        self._messageQueue = messageQueue
+        self._ipcController = ipcController
         # self._channelLists = channelLists
         self._messageHandler = messageHandler
+        self._messageHandler.SetParentProcess(self)
 
         self._channelDtos = channelDtos
 
 
+
+
     def PostInit(self):
+
         from common_lib.MessageQueue.EventBus import EventBus
-        self.SetEventBus(EventBus(self, self._messageQueue ))
+        self.SetEventBus(EventBus(self, self._ipcController ))
 
         channels = []
         for channelDto in self._channelDtos:

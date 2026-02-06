@@ -3,12 +3,15 @@ from common_lib.Enum.IENUM import IENUM
 
 class E_PIPE_TYPE(IENUM):
 
-    IN = 0
-    OUT = 1
+    SERVER_TO_CLIENT = 0
+    CLIENT_TO_SERVER = 1
+
+    COM_TO_COM = 2
 
     _name_map = {
-        IN: 'IN',
-        OUT: 'OUT',
+        SERVER_TO_CLIENT: 'SERVER_TO_CLIENT',
+        CLIENT_TO_SERVER: 'CLIENT_TO_SERVER',
+        COM_TO_COM: 'COM_TO_COM',
     }
 
     @classmethod
@@ -32,3 +35,17 @@ class E_PROTOCOL_DIR(IENUM):
     @classmethod
     def GetName(cls, value):
         return cls._name.get(value, "UNKNOWN")
+
+
+#
+#
+#
+# def main():
+#
+#     print( E_PIPE_TYPE.GetName(E_PIPE_TYPE.IN) )
+#
+#     pass
+#
+#
+# if __name__ == '__main__':
+#     main()

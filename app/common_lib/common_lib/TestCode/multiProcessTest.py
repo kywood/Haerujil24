@@ -16,6 +16,9 @@ def main():
                                         channel_name="PQ"
                                     ),
                                 ] )
+
+    from common_lib.MessageQueue.IPCS.IPCController import IPCController
+    IPCController()
     
     ## TODO 1
     ## 이부분에서 실행을 할시 예외가 터짐

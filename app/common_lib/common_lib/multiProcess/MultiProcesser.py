@@ -1,7 +1,7 @@
 import multiprocessing
 
 from common_lib.Dtos.IDto import IDTO
-from common_lib.MessageQueue.MpMessageQueue import MpMessageQueue
+from common_lib.MessageQueue.MessageChannelDTO import MessageChennelDTOContainer
 from common_lib.Thread.abThread import abThread
 from common_lib.multiProcess.abProcess import abProcess
 
@@ -24,7 +24,7 @@ class ProcessingDTO(IDTO):
 # class cMultiProcesser(abThread, SingletonInstane):
 class MultiProcesser(abThread , abProcess):
 
-    def __init__(self,  messageQueue : MpMessageQueue ,  process_size=0):
+    def __init__(self,  messageChennelDTOContainer : MessageChennelDTOContainer ,  process_size=0):
         abThread.__init__(self)
         abProcess.__init__(self ,"MultiProcesser")
 
@@ -66,6 +66,8 @@ class MultiProcesser(abThread , abProcess):
     def Append(self, process:abProcess):
         with self._lock:
             self._processReadyQueue.put( process )
+
+        return self
 
 
     def RunAsync(self):
