@@ -60,12 +60,35 @@ class cConsumerProcess(eventBusProcess):
 
         # print("cConsumerProcess :: CallProcessing~")
 
-        self.GetEventBus().Send("COMQ" ,f" [cConsumerProcess] [{self.GetName()}]   cConsumerMessage  {self._loop} " )
+        # self.GetEventBus().Send("COMQ" ,f" [cConsumerProcess] [{self.GetName()}]   cConsumerMessage  {self._loop} " )
+
+        messageChannelQueue = self.GetEventBus().GetMessageChannel( "COMQ" )
+
+        messageChannelQueue.Push(f" [cConsumerProcess] [{self.GetName()}]   cConsumerMessage  {self._loop} ")
+
 
         ## packet consumeing
         self._loop = self._loop + 1
 
-        time.sleep(1)
+
+        if self.GetName() == "c2":
+
+            messageChannelHSet = self.GetEventBus().GetMessageChannel("COMSet")
+            messageChannelHSet.Set("k", self._loop)
+            pass
+
+        if self.GetName() == "c1":
+            messageChannelHSet = self.GetEventBus().GetMessageChannel("COMSet")
+
+
+            if messageChannelHSet.IsContain("k"):
+                v = messageChannelHSet.Get("k")
+
+                print(f" hset : {v}")
+
+
+
+        time.sleep(0.4)
 
         pass
 

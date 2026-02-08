@@ -10,12 +10,18 @@ class IBus:
     def __init__(self):
         pass
 
-    @abstractmethod
-    def GetMessageQueue(self):
-        pass
+    # @abstractmethod
+    # def GetMessageQueue(self):
+    #     pass
 
     @abstractmethod
     def GetParentProcess(self):
+        pass
+
+    @abstractmethod
+    def GetMessageChannel(self , channel_name ):
+
+
         pass
 
     pass
@@ -50,18 +56,12 @@ class EventBus(IBus):
                              channel_name,
                              channel_type
                              ):
-        # from ody_lib.message_queue.cMessageChannel import cMessageChannel
 
         if self._messageChannelContainer.IsContainChannel(channel_name, channel_type) == False:
-            # from common_lib.MessageQueue.MessageChannel import MessageChannel
-            # messageChannel = MessageChannel(channel_name, channel_type).Build(self._messageChannelContainer)
-            # # self._messageChannelContainer.AppendChannel(cMessageChannel(channel_name, channel_type).Build(self._messageChannelContainer))
-            # self._messageChannelContainer.AppendChannel(messageChannel)
 
             from common_lib.MessageQueue.MessageChannel import MessageChannelFactory
 
             channelIPC = self._ipcController.GetChannelIPC(channel_name)
-
             messageChannel = MessageChannelFactory.CreateMessageChennel(channelIPC, channel_type)
 
             self._messageChannelContainer.AppendMessageChannel(messageChannel)
@@ -73,13 +73,7 @@ class EventBus(IBus):
     def AddListener(self, event_listener):
         event_listener.SetEventBus(self)
         self.GetEventListenerContainer().AddListener(event_listener)
-
-    def AppendChannel(self, message_channel):
-        self.GetMessageChannelContainer().AppendChannel(message_channel)
-
-    def GetChannel(self, channel_name):
-        return self.GetMessageChannelContainer().GetChannel(channel_name)
-
+    #
     def GetMessageChannelContainer(self):
         return self._messageChannelContainer
 
@@ -95,23 +89,20 @@ class EventBus(IBus):
     def IsStoped(self):
         return self._eventListenerContainer.IsStoped()
 
-    def Send(self, channel_nm, protocol):
-        # self._messageChannelContainer.Push(channel_nm, protocol)
+    def Send(self, channel_name, protocol):
 
         messageChannel = self._messageChannelContainer.GetMessageChannel(
-            channel_name=channel_nm
+            channel_name=channel_name
         )
-
-        # messageChannel = self._messageChannelController.GetMessageChannel(channel_name=channel_nm)
-
-        # messageChannel as MessageChannelQueue
 
         messageChannel.Push(protocol)
         pass
 
     @abstractmethod
-    def GetMessageQueue(self):
-        return self._messageQueue
+    def GetMessageChannel(self, channel_name):
+        return self._messageChannelContainer.GetMessageChannel(
+            channel_name=channel_name
+        )
 
     @abstractmethod
     def GetParentProcess(self):

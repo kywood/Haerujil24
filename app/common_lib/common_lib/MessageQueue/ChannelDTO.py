@@ -9,7 +9,7 @@ class ChannelDTO(IDTO):
 
     def __init__(self,
                  channel_name: str,
-                 channel_type: E_CHANNEL_TYPE):
+                 channel_type: E_CHANNEL_TYPE = E_CHANNEL_TYPE.NONE):
         super().__init__()
         self.channel_name = channel_name
         self.channel_type = channel_type

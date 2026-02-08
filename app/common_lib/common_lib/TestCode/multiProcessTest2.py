@@ -1,14 +1,12 @@
 from common_lib.MessageQueue.ChannelType import E_CHANNEL_TYPE
 from common_lib.MessageQueue.IPCS.IPC import IPC_HSet
 
-
 def main():
 
-
     from common_lib.MessageQueue.IPCS.IPC import IPC_Queue
-
     from common_lib.MessageQueue.IPCS.IPCController import IPC_Controller
     from common_lib.MessageQueue.IPCS.IPCController import ChannelIPC
+
     ipcController = IPC_Controller().Append(
         ChannelIPC(
             ipc=IPC_Queue(),
@@ -20,30 +18,6 @@ def main():
             channel_name="COMSet"
         )
     )
-
-    #
-    # mcc = MessageChennelDTOContainer().Append(
-    #     MessageChannelDTO(
-    #         ipc=IPC_Queue(),
-    #         channel_name="COM1"
-    #     )
-    # ).Append(
-    #     MessageChannelDTO(
-    #         ipc=IPC_Queue(),
-    #         channel_name="COM2"
-    #     )
-    # )
-
-    # from common_lib.MessageQueue.MessageChannelController import MessageChannelController
-    # mcc = MessageChannelController()
-    #
-    # mcc.AppendMessageChannel(
-    #     MessageChannelQueue(
-    #         ipcQueue,
-    #         channel_name="jobq",
-    #         channel_type=E_CHANNEL_TYPE.SERVER
-    #     )
-    # )
 
     from common_lib.multiProcess.MultiProcesser import MultiProcesser
     mp = MultiProcesser(ipcController)
@@ -58,71 +32,67 @@ def main():
         cProducerProcess(
             name="p1" ,
             ipcController=ipcController,
-                               channelDtos=[
-                                   ChannelDTO(
-                                       channel_name="COMQ",
-                                       channel_type=E_CHANNEL_TYPE.SERVER
-                                   ),
-                                   ChannelDTO(
-                                       channel_name="COMSet",
-                                       channel_type=E_CHANNEL_TYPE.NONE
-                                   )
-                               ],
-                               messageHandler=MessageHandler()
-                               )
+            channelDtos=[
+               ChannelDTO(
+                   channel_name="COMQ",
+                   channel_type=E_CHANNEL_TYPE.SERVER
+               ),
+               ChannelDTO(
+                   channel_name="COMSet",
+                   channel_type=E_CHANNEL_TYPE.NONE
+               )
+            ],
+            messageHandler=MessageHandler()
+            )
     ).Append(
 
         cConsumerProcess(
             name="c1",
             ipcController=ipcController,
-                         channelDtos=[
-                             ChannelDTO(
-                                 channel_name="COMQ",
-                                 channel_type=E_CHANNEL_TYPE.CLIENT
-                             ),
-                             ChannelDTO(
-                                 channel_name="COMSet",
-                                 channel_type=E_CHANNEL_TYPE.NONE
-                             )
-                         ],
-                         messageHandler=MessageHandler()
-                         )
+             channelDtos=[
+                 ChannelDTO(
+                     channel_name="COMQ",
+                     channel_type=E_CHANNEL_TYPE.CLIENT
+                 ),
+                 ChannelDTO(
+                     channel_name="COMSet"
+                 )
+             ],
+             messageHandler=MessageHandler()
+             )
     ).Append(
 
         cConsumerProcess(
             name="c2",
             ipcController=ipcController,
-                         channelDtos=[
-                             ChannelDTO(
-                                 channel_name="COMQ",
-                                 channel_type=E_CHANNEL_TYPE.CLIENT
-                             ),
-                             ChannelDTO(
-                                 channel_name="COMSet",
-                                 channel_type=E_CHANNEL_TYPE.NONE
-                             )
-                         ],
-                         messageHandler=MessageHandler()
-                         )
+             channelDtos=[
+                 ChannelDTO(
+                     channel_name="COMQ",
+                     channel_type=E_CHANNEL_TYPE.CLIENT
+                 ),
+                 ChannelDTO(
+                     channel_name="COMSet"
+                 )
+             ],
+             messageHandler=MessageHandler()
+             )
+    ).Append(
+
+        cConsumerProcess(
+            name="c3",
+            ipcController=ipcController,
+             channelDtos=[
+                 ChannelDTO(
+                     channel_name="COMQ",
+                     channel_type=E_CHANNEL_TYPE.CLIENT
+                 ),
+                 ChannelDTO(
+                     channel_name="COMSet"
+                 )
+             ],
+             messageHandler=MessageHandler()
+             )
     )
-    #
-    # from common_lib.TestCode.testProcess import cConsumerProcess
-    # mp.Append(
-    #
-    #     cConsumerProcess(ipcController=ipcController,
-    #                      channelDtos=[
-    #                          ChannelDTO(
-    #                              channel_name="COMQ",
-    #                              channel_type=E_CHANNEL_TYPE.CLIENT
-    #                          ),
-    #                          ChannelDTO(
-    #                              channel_name="COMSet",
-    #                              channel_type=E_CHANNEL_TYPE.NONE
-    #                          )
-    #                      ],
-    #                      messageHandler=MessageHandler()
-    #                      )
-    # )
 
     mp.Start()
 
