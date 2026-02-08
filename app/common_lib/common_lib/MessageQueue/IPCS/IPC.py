@@ -40,9 +40,12 @@ class IPC(ABC):
 
     def _SetSocketLock(self , socket_name ):
 
-        from multiprocessing import Queue, Lock, Manager
+        from multiprocessing import  Lock
         self._ipc_sockets_locks[ socket_name ] = Lock()
-        pass
+
+    def _GetSocketLock(self , socket_name ):
+        return self._ipc_sockets_locks[ socket_name ]
+
 
     def SetMessageChannel(self , message_channel ):
         self._message_channel = message_channel
@@ -124,40 +127,38 @@ class IPC_HSet(IPC):
         pass
 
     def _InitSocket_(self):
-        self._ipc_sockets = {}
-        self._ipc_sockets_locks = {}
+        from multiprocessing import Manager
+        from multiprocessing import Lock
 
-        from multiprocessing import  Manager
-        from common_lib.MessageQueue.PipeType import E_PIPE_TYPE
-        # manager = Manager()
-        #
-        # Manager().dict()
+        self._ipc_socket = Manager().dict()
+        self._ipc_socket_locks = Lock()
 
-        self._SetSocket(E_PIPE_TYPE.GetName(E_PIPE_TYPE.COM_TO_COM),Manager().dict())
-        # self._SetSocket(E_PIPE_TYPE.GetName(E_PIPE_TYPE.CLIENT_TO_SERVER), Queue())
 
-        self._SetSocketLock(E_PIPE_TYPE.GetName(E_PIPE_TYPE.COM_TO_COM))
-        # self._SetSocketLock(E_PIPE_TYPE.GetName(E_PIPE_TYPE.CLIENT_TO_SERVER))
+    def _getSocket(self):
+        return self._ipc_socket
 
-        # from multiprocessing import Queue, Lock, Manager
-        # from common_lib.MessageQueue.PipeType import E_PIPE_TYPE
+    def _getSocketLock(self):
+        return self._ipc_socket_locks
 
-        # self._ipc_sockets[ E_PIPE_TYPE.GetName(E_PIPE_TYPE.IN) ] = Queue()
-        # self._ipc_sockets[ E_PIPE_TYPE.GetName(E_PIPE_TYPE.OUT) ] = Queue()
+    def Set(self , key , value ):
 
-        pass
+        with self._ipc_socket_locks:
+            self._getSocket()[ key ] = value
 
-    def Push(self, channel_name, protocol):
-        pass
+    def Get(self , key ):
 
-    def Pop(self, channel_name):
-        pass
+        with self._ipc_socket_locks:
+            return self._getSocket()[key]
 
-    def Peek(self, channel_name):
-        pass
+    def Clear(self):
 
-    def Count(self, channel_name):
-        pass
+        from multiprocessing import Manager
+        with self._ipc_socket_locks:
+            self._ipc_socket = Manager().dict()
+
+    def IsContain(self ,key):
+        with self._ipc_socket_locks:
+            return key in self._getSocket()
 
     def InitLock(self, channel_name):
         pass
