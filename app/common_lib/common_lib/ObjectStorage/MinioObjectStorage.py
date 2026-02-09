@@ -5,7 +5,6 @@ from botocore.exceptions import ClientError
 
 from common_lib.ObjectStorage.ObjectStat import ObjectStat
 from common_lib.ObjectStorage.ObjectStorage import ObjectStorage
-from common_lib.ObjectStorage.ObjectStorageConnection import ObjectStorageConnection, MinioConnection
 
 
 class MinioObjectStorage(ObjectStorage):

@@ -1,7 +1,7 @@
 from common_lib.Config.ConfigLoader import ConfigLoader
 from common_lib.Path.BasePath import BasePath
 
-from App.NormalThread import NormalThread
+from Modules.NormalThread import NormalThread
 
 
 class DataSetBuilder:
@@ -56,7 +56,7 @@ class DataSetBuilder:
             print(lists)
             print("================= walks =============")
 
-            from App.ObjectStorageUtils.ObjectStorageUtils import ObjectStorageUtils
+            from Modules.ObjectStorageUtils.ObjectStorageUtils import ObjectStorageUtils
             for key in ObjectStorageUtils.GetFileName(storage,path , suffix="mp4"):
                 print(key)
 

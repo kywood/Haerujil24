@@ -39,6 +39,28 @@ def main2():
     pass
 
 
+def main3():
+    from common_lib.Config.ConfigLoader import ConfigLoader
+
+    from common_lib.Path.BasePath import BasePath
+    basepath = BasePath.instance().GetBasePath()
+    print(basepath)
+
+    filePath = BasePath.instance().File("config.ini")
+
+    print(filePath)
+
+    bucket = ConfigLoader.instance(filePath).Get(
+        section="MINIO",
+        key="S3_BUCKET"
+    )
+
+    print(bucket)
+
+    pass
+
+
+
 
 if __name__ == '__main__':
-    main2()
+    main3()
