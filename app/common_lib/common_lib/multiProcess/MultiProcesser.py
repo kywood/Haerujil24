@@ -1,4 +1,5 @@
 import multiprocessing
+from typing import List
 
 from common_lib.Dtos.IDto import IDTO
 from common_lib.MessageQueue.MessageChannelDTO import MessageChennelDTOContainer
@@ -60,12 +61,16 @@ class MultiProcesser(abThread , abProcess):
         # print("A")
         pass
 
-    ## TODO
-    ## 이부분에서  process 에 messageQueue  를 주입한다
-    ## 이걸 지금 할
     def Append(self, process:abProcess):
         with self._lock:
             self._processReadyQueue.put( process )
+
+        return self
+
+    def AppendLists(self, process_lists:List[abProcess]):
+        with self._lock:
+            for process in process_lists:
+                self._processReadyQueue.put( process )
 
         return self
 

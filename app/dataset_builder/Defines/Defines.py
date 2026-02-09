@@ -8,6 +8,11 @@ class Defines:
     CONFIG_FILE_NAME = "config.ini"
 
 
+    class E_IPC:
+        JOB_QUEUE = "JOB_QUEUE"
+        MAKE_SET  = "MAKE_SET"
+
+
     class ObjectStoragePath:
         bucket="haerujil"
         noraml="normal"
@@ -27,10 +32,7 @@ class Defines:
         def Factory(factory_type:E_FACTORY_TYPE , *args , **kwargs):
             return Defines.FactoryLoader.factories[factory_type](*args , **kwargs)
 
-
-
-
-
     pass
+
 
 

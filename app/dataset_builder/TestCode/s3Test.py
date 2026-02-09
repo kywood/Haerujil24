@@ -1,4 +1,4 @@
-from App.Dtos.S3Dtos import S3ConnectDtoEx
+from Modules.Dtos.S3Dtos import S3ConnectDtoEx
 
 
 def main():
