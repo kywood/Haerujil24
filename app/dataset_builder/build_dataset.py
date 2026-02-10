@@ -8,9 +8,9 @@ def main():
 
 
     config_file = BasePath.instance().File(Defines.CONFIG_FILE_NAME)
-    ConfigLoader.instance(config_file)
+    configLoader = ConfigLoader.instance(config_file)
 
-    app = DataSetBuilder(BasePath.instance() ,ConfigLoader.instance() )
+    app = DataSetBuilder(BasePath.instance() ,configLoader )
 
     app.Start()
 

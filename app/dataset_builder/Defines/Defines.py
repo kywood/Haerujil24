@@ -1,6 +1,6 @@
 from common_lib.Enum.IENUM import IENUM
 
-from Defines.MinioConnectionFactory import MinioConnectionFactory
+from Factory.MinioConnectionFactory import MinioConnectionFactory
 
 
 class Defines:
@@ -25,7 +25,7 @@ class Defines:
             MINIO_CONNECTION = "MINIO_CONNECTION"
 
         factories={
-            E_FACTORY_TYPE.MINIO_CONNECTION : lambda basePath , configLoader : MinioConnectionFactory.Factory(basePath , configLoader)
+            E_FACTORY_TYPE.MINIO_CONNECTION : lambda basePath , configLoader : MinioConnectionFactory.GetConnection( configLoader)
         }
 
         @staticmethod

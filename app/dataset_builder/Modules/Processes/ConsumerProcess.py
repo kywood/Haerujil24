@@ -2,10 +2,11 @@ from typing import List
 from common_lib.MessageQueue.ChannelDTO import ChannelDTO
 from common_lib.MessageQueue.IPCS.IPCController import IPC_Controller
 from common_lib.MessageQueue.MessageHandler import MessageHandler
-from common_lib.multiProcess.abProcess import eventBusProcess
+
+from Modules.Processes.ConfigEventBusProcess import ConfigEventBusProcess
 
 
-class ConsumerProcess(eventBusProcess):
+class ConsumerProcess(ConfigEventBusProcess):
 
     def __init__(self,
                  ipcController: IPC_Controller,

@@ -7,7 +7,7 @@ from Factory.Factory import IFactory
 class MinioConnectionFactory(IFactory):
 
     @staticmethod
-    def Factory( basePath : BasePath , configLoader:ConfigLoader ):
+    def GetConnection(  configLoader:ConfigLoader ):
         from common_lib.ObjectStorage.ObjectStorageConnection import MinioConnection
         # print("i'm factory")
         # pp= configLoader.Get(section="MINIO",key="S3_ENDPOINT")
