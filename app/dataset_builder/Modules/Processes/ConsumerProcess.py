@@ -22,6 +22,8 @@ class ConsumerProcess(ConfigEventBusProcess):
 
     def CallProcessing(self, process):
 
+        print("process -- call!!")
+
         pass
 
 

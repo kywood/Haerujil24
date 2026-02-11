@@ -40,17 +40,13 @@ def main():
 
     consumerProcess = ProcessFactory.CreateConsumerProcess(ipcController , MessageHandler())
 
-    workerProcessLists = ProcessFactory.CreateWorkerProcesss(ipcController=ipcController ,messageHandler=MessageHandler() ,process_count=3)
+    workerProcessLists = ProcessFactory.CreateWorkerProcesss(ipcController=ipcController ,messageHandler=MessageHandler() ,process_count=1)
 
     mp.Append(
         consumerProcess
     ).AppendLists(
         workerProcessLists
     )
-
-    # mp.Append(
-    #     consumerProcess
-    # )
 
     mp.Start()
 

@@ -12,14 +12,14 @@ def main():
 
     bucket_name= "test-bucket"
 
-    with con.con() as session :
+    with con.GetSession() as session :
         storage = session.storage(bucket_name)
         #
         # for k in storage.ls():
         #     print(k)
         #
         #
-        path = PathUtil.dir("train2017")
+        path = PathUtil.Dir("train2017")
         # path = PathUtil.file("train2017")
         # 또는
         lists = list(storage.ls(prefix=path))
@@ -47,7 +47,26 @@ def main():
 
     pass
 
+def main2():
+    from common_lib.ObjectStorage.ObjectStorageConnection import MinioConnection
+    con = MinioConnection(
+        endpoint="http://127.0.0.1:9000",
+        user_name="oracle",
+        password="oracleoracle",
+        region_name="us-east-1",
+        bucket_name="test-bucket"
+    )
+
+    with con.GetStorage() as storage :
+        path = PathUtil.Dir("train2017")
+        # path = PathUtil.file("train2017")
+        # 또는
+        lists = list(storage.ls(prefix=path))
+        print(lists)
+
+
 if __name__ == '__main__':
-    main()
+    # main()
+    main2()
 
 

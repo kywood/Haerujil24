@@ -124,7 +124,7 @@ class EventProcess(abProcess):
 
     def Start(self):
 
-        self.PostInit()
+        # self.PostInit()
 
         if self._eventBus != None:
             self._eventBus.Start()
