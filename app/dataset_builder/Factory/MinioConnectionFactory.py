@@ -21,7 +21,9 @@ class MinioConnectionFactory(IFactory):
             user_name=configLoader.Get(section=ConfigDefine.E_SECTION.MINIO,
                          key=ConfigDefine.E_MINIO.S3_ACCESS_KEY) ,
             password=configLoader.Get(section=ConfigDefine.E_SECTION.MINIO,
-                         key=ConfigDefine.E_MINIO.S3_SECRET_KEY)
+                         key=ConfigDefine.E_MINIO.S3_SECRET_KEY) ,
+            bucket_name=configLoader.Get(section=ConfigDefine.E_SECTION.MINIO,
+                         key=ConfigDefine.E_MINIO.S3_BUCKET)
 
         )
 

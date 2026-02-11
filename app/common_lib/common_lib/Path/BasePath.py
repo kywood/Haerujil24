@@ -6,12 +6,17 @@ from common_lib.Utils.Singleton import SingletonBase
 class BasePath(SingletonBase):
 
 
-    def __init__(self):
+    def __init__(self , relative_path: str = None ):
         super().__init__()
         from pathlib import Path
 
         entry = sys.argv[0]
-        self._basePath = Path(entry).resolve().parent
+        base_path = Path(entry).resolve().parent
+
+        if relative_path:
+            base_path = (base_path / relative_path).resolve()
+
+        self._basePath = base_path
 
         # self._basePath = Path(__file__).resolve().parents[0]
         pass
@@ -66,11 +71,11 @@ class BasePath(SingletonBase):
         from common_lib.Utils.PathUtil import PathUtil
         return PathUtil.File(*new_paths)
 #
-#
+
 # #
 # #
 # if __name__ == '__main__':
-#     pa=BasePath.instance().GetBasePath()
+#     pa=BasePath.instance("../../").GetBasePath()
 #
 #     print(pa)
 #

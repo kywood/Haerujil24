@@ -51,7 +51,79 @@ def main():
 
     pass
 
+def main2():
+    from Factory.MinioConnectionFactory import MinioConnectionFactory
+
+    from common_lib.Path.BasePath import BasePath
+    from Defines.Defines import Defines
+    config_file = BasePath.instance("../").File(Defines.CONFIG_FILE_NAME)
+    from common_lib.Config.ConfigLoader import ConfigLoader
+    configLoader = ConfigLoader.instance(config_file)
+
+    minioConnection = MinioConnectionFactory.GetConnection(
+        configLoader
+    )
+
+    with minioConnection.GetSession() as session :
+        bucket_name = "haerujil"
+
+        storage = session.storage(bucket_name)
+
+        lists=storage.ls()
+
+        for li in lists:
+            print(li)
+
+        # print(lists)
+
+
+        pass
+
+
+    pass
+
+
+def main3():
+    from common_lib.Path.BasePath import BasePath
+    from Defines.Defines import Defines
+    config_file = BasePath.instance("../").File(Defines.CONFIG_FILE_NAME)
+    from common_lib.Config.ConfigLoader import ConfigLoader
+    configLoader = ConfigLoader.instance(config_file)
+
+    from Factory.MinioConnectionFactory import MinioConnectionFactory
+    minioConnection = MinioConnectionFactory.GetConnection(
+        configLoader
+    )
+
+
+    with minioConnection.GetStorage() as storage :
+
+        lists = storage.ls()
+        for li in lists:
+            print(li)
+
+        # print(lists)
+
+
+
+def main4():
+    from common_lib.Path.BasePath import BasePath
+    from Defines.Defines import Defines
+    config_file = BasePath.instance("../").File(Defines.CONFIG_FILE_NAME)
+    from common_lib.Config.ConfigLoader import ConfigLoader
+    configLoader = ConfigLoader.instance(config_file)
+
+    from Factory.MinioConnectionFactory import MinioConnectionFactory
+    minioConnection = MinioConnectionFactory.GetConnection(
+        configLoader
+    )
+
+    from Modules.S3Utils.S3Utils import S3Utils
+    S3Utils.GetUnNormalLists(minioConnection)
+
+    pass
+
 if __name__ == '__main__':
-    main()
+    main4()
 
 

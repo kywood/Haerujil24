@@ -122,8 +122,6 @@ class MultiProcesser(abThread , abProcess):
                 while not self._processReadyQueue.empty() and len(self._processingList) < self._process_size:
                     process = self._processReadyQueue.get()
 
-                    # self._allocateShardQueue(process)
-
                     processing = multiprocessing.Process(target=process.HandleProcess, args=(process,))
                     # processing.start()
                     processingStartQueue.append(processing)
@@ -134,25 +132,4 @@ class MultiProcesser(abThread , abProcess):
                     prc=processingStartQueue.pop(0)
                     prc.start()
                     print("new start---------- " + prc.name)
-            #
-            # # deallocation process
-            # dead_items = []
-            #
-            # with self._lock:
-            #     items = list(self._processingList)
-            #
-            # for item in items:
-            #     p = item.GetProcessingProcess()
-            #     p.join(timeout=0.3)
-            #     if not p.is_alive():
-            #         dead_items.append(item)
-            #
-            # if dead_items:
-            #     with self._lock:
-            #
-            #         # for item in dead_items:
-            #         #     self._deleteShardQueue(item.GetProcess())
-            #
-            #
-            #         self._processingList = [x for x in self._processingList if x not in dead_items]
 

@@ -1,9 +1,15 @@
+from abc import ABC
+
 from common_lib.Enum.IENUM import IENUM
 
 from Factory.MinioConnectionFactory import MinioConnectionFactory
 
 
-class Defines:
+class IDefine(ABC):
+
+    pass
+
+class Defines(IDefine,ABC):
 
     CONFIG_FILE_NAME = "config.ini"
 
