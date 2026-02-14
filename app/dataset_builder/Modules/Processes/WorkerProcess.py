@@ -1,24 +1,29 @@
 from typing import List
+
 from common_lib.MessageQueue.ChannelDTO import ChannelDTO
 from common_lib.MessageQueue.IPCS.IPCController import IPC_Controller
-from common_lib.MessageQueue.MessageHandler import MessageHandler
 
 from Modules.Processes.ConfigEventBusProcess import ConfigEventBusProcess
+from Modules.Processes.MessageHandler import MessageHandler
+from Modules.Processes.StateProcess import StateProcess
+from Modules.State.StateController import StateController
 
+class WorkerProcess(ConfigEventBusProcess , StateProcess):
 
-class WorkerProcess(ConfigEventBusProcess):
 
     def __init__(self,
                  ipcController: IPC_Controller,
                  channelDtos: List[ChannelDTO],
                  messageHandler: MessageHandler,
-                 name: str = "None",
+                 stateController: StateController = None ,
+                 name: str = "None"
                  ):
-        super().__init__(
-            name=name,
-            ipcController=ipcController ,
-            channelDtos=channelDtos ,
-            messageHandler=messageHandler)
+        ConfigEventBusProcess.__init__( self, ipcController=ipcController ,
+                                        channelDtos=channelDtos,
+                                        messageHandler=messageHandler,
+                                        name=name
+                                        )
+        StateProcess.__init__(self ,stateController=stateController)
 
     def CallProcessing(self, process):
 

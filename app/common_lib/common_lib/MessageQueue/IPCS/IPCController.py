@@ -33,7 +33,7 @@ class IPC_Controller(List):
 
         for channelIpc in self:
 
-            if channelIpc.GetChannelName() is channel_name:
+            if channelIpc.GetChannelName() == channel_name:
                 return channelIpc
 
         return None

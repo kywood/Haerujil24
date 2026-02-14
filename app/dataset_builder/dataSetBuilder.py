@@ -1,16 +1,4 @@
 
-
-def main2():
-    from common_lib.Path.BasePath import BasePath
-    from Defines.Defines import Defines
-    from common_lib.Config.ConfigLoader import ConfigLoader
-
-    config_file = BasePath.instance().File(Defines.CONFIG_FILE_NAME)
-    configLoader = ConfigLoader.instance(config_file)
-
-
-    pass
-
 def main():
 
     from common_lib.MessageQueue.IPCS.IPC import IPC_Queue
