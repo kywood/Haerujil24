@@ -17,7 +17,7 @@ class ProcessFactory(IFactory):
 
 
     factories = {
-        E_PROCESS_TYPE.CONSUMER_PROCESS: Func( lambda ipcController , messageHandler : ConsumerProcess(
+        E_PROCESS_TYPE.CONSUMER_PROCESS: Func( lambda ipcController, stateControllerWorker , messageHandler : ConsumerProcess(
                                                                                 name="ConsumerProcess" ,
                                                                                 ipcController=ipcController ,
                                                                                 channelDtos=[
@@ -29,9 +29,11 @@ class ProcessFactory(IFactory):
                                                                                         channel_name=Defines.E_IPC.MAKE_SET,
                                                                                     )
                                                                                 ],
-                                                                                messageHandler=messageHandler
+                                                                                messageHandler=messageHandler,
+                                                                                stateController=stateControllerWorker
+
                                                                               ) ),
-        E_PROCESS_TYPE.WORKER_PROCESS: Func( lambda  ipcController , process_name ,messageHandler : WorkerProcess(
+        E_PROCESS_TYPE.WORKER_PROCESS: Func( lambda  ipcController , stateControllerWorker, process_name ,messageHandler : WorkerProcess(
                                                                                 name=process_name,
                                                                                 ipcController=ipcController,
                                                                                 channelDtos=[
@@ -43,16 +45,17 @@ class ProcessFactory(IFactory):
                                                                                         channel_name=Defines.E_IPC.MAKE_SET,
                                                                                     )
                                                                                 ],
-                                                                                messageHandler=messageHandler
+                                                                                messageHandler=messageHandler,
+                                                                                stateController=stateControllerWorker
                                                                             ) )
     }
 
     @staticmethod
-    def CreateConsumerProcess( ipcController ,messageHandler ):
-        return ProcessFactory.factories[ProcessFactory.E_PROCESS_TYPE.CONSUMER_PROCESS].Invoke(ipcController ,messageHandler)
+    def CreateConsumerProcess( ipcController , stateController ,messageHandler ):
+        return ProcessFactory.factories[ProcessFactory.E_PROCESS_TYPE.CONSUMER_PROCESS].Invoke(ipcController , stateController ,messageHandler)
 
     @staticmethod
-    def CreateWorkerProcesss(  ipcController , messageHandler , process_count ):
+    def CreateWorkerProcesss(  ipcController , stateController , messageHandler , process_count ):
 
         processLists=[]
 
@@ -63,7 +66,7 @@ class ProcessFactory(IFactory):
 
             processLists.append(
                 ProcessFactory.factories[ProcessFactory.E_PROCESS_TYPE.WORKER_PROCESS].Invoke(
-                    ipcController, processName , messageHandler
+                    ipcController, stateController, processName , messageHandler
                 )
             )
 
