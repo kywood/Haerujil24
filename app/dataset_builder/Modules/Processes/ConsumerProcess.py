@@ -28,6 +28,19 @@ class ConsumerProcess(ConfigEventBusProcess , StateProcess):
 
         pass
 
+
+    ## TODO F: 이부분은 StateContreoller 에서 초기화 스테이트를 넣자..
+    def WithStateController(self ,stateController : StateController  ):
+
+        super().WithStateController(stateController )
+
+        from Defines.StateDefine import StateDefaine
+        self._getStateController().ChangeState(StateDefaine.ConsumerState.E_STATE.Idle)
+
+        return self
+
+
+
     def CallProcessing(self, process):
 
         print("process -- call!!")

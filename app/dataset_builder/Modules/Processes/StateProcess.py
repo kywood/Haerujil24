@@ -10,7 +10,12 @@ class StateProcess:
         self._stateController = stateController
 
 
-    def WithStateController(self ,stateController : StateController  ):
+    def WithStateController(self ,stateController : StateController ):
         self._stateController = stateController
         return self
+
+
+    def _getStateController(self):
+        return self._stateController
+
 

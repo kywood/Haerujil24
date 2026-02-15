@@ -10,6 +10,10 @@ from Modules.State.ConsumerState.Idle import IdleState
 from Modules.State.WorkerState.Running import RunningState
 
 
+class E_BaseState(IENUM):
+    SNone = "None"
+
+
 class StateDefaine(IDefine,ABC):
 
     class E_StateType(IENUM):
@@ -17,14 +21,14 @@ class StateDefaine(IDefine,ABC):
         Worker   = "Worker"
 
     class ConsumerState:
-        class E_STATE(IENUM):
+        class E_STATE(E_BaseState):
             Idle = "Idle"
             Dispatching = "Dispatching"
             AwaitingCompletion = "AwaitingCompletion"
 
     class WorkerState(IENUM):
 
-        class E_STATE(IENUM):
+        class E_STATE(E_BaseState):
             Running = "Running"
 
 

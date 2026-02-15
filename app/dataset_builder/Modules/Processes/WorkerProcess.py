@@ -25,6 +25,18 @@ class WorkerProcess(ConfigEventBusProcess , StateProcess):
                                         )
         StateProcess.__init__(self ,stateController=stateController)
 
+
+    def WithStateController(self ,stateController : StateController  ):
+
+        super().WithStateController(stateController )
+
+        from Defines.StateDefine import StateDefaine
+        self._getStateController().ChangeState(StateDefaine.WorkerState.E_STATE.Running)
+
+        return self
+
+
+
     def CallProcessing(self, process):
 
         pass
