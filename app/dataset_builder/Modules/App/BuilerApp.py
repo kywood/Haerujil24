@@ -42,16 +42,14 @@ class BuilderApp(abApp):
 
         from Defines.StateDefine import StateFactory
         from Defines.StateDefine import StateDefaine
-        stateControllerConsumer = StateFactory.CreateStateController(state_type=StateDefaine.E_StateType.Consumer )
-        stateControllerWorker = StateFactory.CreateStateController(state_type=StateDefaine.E_StateType.Worker )
+        # stateControllerConsumer = StateFactory.CreateStateController(state_type=StateDefaine.E_StateType.Consumer )
+        # stateControllerWorker = StateFactory.CreateStateController(state_type=StateDefaine.E_StateType.Worker )
 
 
         consumerProcess = ProcessFactory.CreateConsumerProcess(ipcController=ipcController,
-                                                               stateController=stateControllerWorker,
                                                                messageHandler=MessageHandler())
 
         workerProcessLists = ProcessFactory.CreateWorkerProcesss(ipcController=ipcController,
-                                                                 stateController = stateControllerWorker ,
                                                                  messageHandler=MessageHandler(), process_count=self._workerCount)
 
         self._multiProcess.Append(
@@ -59,6 +57,8 @@ class BuilderApp(abApp):
         ).AppendLists(
             workerProcessLists
         )
+
+        self._multiProcess.Start()
 
         pass
 

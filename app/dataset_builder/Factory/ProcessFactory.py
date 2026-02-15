@@ -51,22 +51,31 @@ class ProcessFactory(IFactory):
     }
 
     @staticmethod
-    def CreateConsumerProcess( ipcController , stateController ,messageHandler ):
+    def CreateConsumerProcess( ipcController , messageHandler ):
+        from Defines.StateDefine import StateDefaine
+        from Defines.StateDefine import StateFactory
+
+        stateController = StateFactory.CreateStateController(state_type=StateDefaine.E_StateType.Consumer)
         return ProcessFactory.factories[ProcessFactory.E_PROCESS_TYPE.CONSUMER_PROCESS].Invoke(ipcController , stateController ,messageHandler)
 
     @staticmethod
-    def CreateWorkerProcesss(  ipcController , stateController , messageHandler , process_count ):
+    def CreateWorkerProcesss(  ipcController ,  messageHandler , process_count ):
 
         processLists=[]
+
+        from Defines.StateDefine import StateDefaine
+        from Defines.StateDefine import StateFactory
 
         for loopCnt in range( process_count ):
             process_no = loopCnt + 1
 
             processName= f"WorkerProcess_{process_no}"
 
+            stateControllerWorker = StateFactory.CreateStateController(state_type=StateDefaine.E_StateType.Worker)
+
             processLists.append(
                 ProcessFactory.factories[ProcessFactory.E_PROCESS_TYPE.WORKER_PROCESS].Invoke(
-                    ipcController, stateController, processName , messageHandler
+                    ipcController, stateControllerWorker, processName , messageHandler
                 )
             )
 
