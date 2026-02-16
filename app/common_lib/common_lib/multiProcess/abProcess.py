@@ -13,7 +13,7 @@ class IProcess:
 
     def GetRunning(self):
         pass
-    def CallProcessing(self, process):
+    def ProcProcessing(self, process):
         pass
     def HandleProcess(self, process):
         pass
@@ -83,7 +83,7 @@ class EventProcess(abProcess):
     def GetRunning(self):
         return self._isRunning
 
-    def CallProcessing(self, process):
+    def ProcProcessing(self, process):
 
         print("abProcess " + self._name)
         #
@@ -105,7 +105,7 @@ class EventProcess(abProcess):
 
             while self._isRunning:
 
-                self.CallProcessing(process)
+                self.ProcProcessing(process)
                 # time.sleep(0.02)
                 time.sleep(0.0)
 

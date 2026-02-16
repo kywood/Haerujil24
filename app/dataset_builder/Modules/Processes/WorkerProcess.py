@@ -1,3 +1,4 @@
+import time
 from typing import List
 
 from common_lib.MessageQueue.ChannelDTO import ChannelDTO
@@ -30,14 +31,20 @@ class WorkerProcess(ConfigEventBusProcess , StateProcess):
 
         super().WithStateController(stateController )
 
-        from Defines.StateDefine import StateDefaine
-        self._getStateController().ChangeState(StateDefaine.WorkerState.E_STATE.Running)
+        from Defines.StateDefine import StateDefine
+        self._getStateController().ChangeState(StateDefine.WorkerState.E_STATE.Running)
 
         return self
 
 
 
-    def CallProcessing(self, process):
+    def ProcProcessing(self, process):
+        print("WorkerProcess::process -- call!!")
+
+        self._getStateController().Proc()
+
+
+        time.sleep(1)
 
         pass
 

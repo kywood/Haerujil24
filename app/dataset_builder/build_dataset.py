@@ -1,3 +1,4 @@
+from Modules.App.BuilerApp import BuilderApp
 from Modules.DataSetBuilder import DataSetBuilder
 
 
@@ -10,9 +11,17 @@ def main():
     config_file = BasePath.instance().File(Defines.CONFIG_FILE_NAME)
     configLoader = ConfigLoader.instance(config_file)
 
-    app = DataSetBuilder(BasePath.instance() ,configLoader )
+    app = BuilderApp(
+        basePath=BasePath.instance(),
+        configLoader=configLoader
+    )
 
-    app.Start()
+    app.Run()
+
+    #
+    # app = DataSetBuilder(BasePath.instance() ,configLoader )
+    #
+    # app.Start()
 
 
     pass

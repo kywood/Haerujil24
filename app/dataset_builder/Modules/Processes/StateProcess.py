@@ -1,3 +1,6 @@
+from abc import abstractmethod
+
+from Modules.State.State import abState
 from Modules.State.StateController import StateController
 
 
@@ -9,6 +12,8 @@ class StateProcess:
 
         self._stateController = stateController
 
+        self.WithStateController(stateController)
+
 
     def WithStateController(self ,stateController : StateController ):
         self._stateController = stateController
@@ -17,5 +22,18 @@ class StateProcess:
 
     def _getStateController(self):
         return self._stateController
+
+    # def _getCurrentState(self):
+    #     return self._stateController.GetCurrentState()
+
+    # @abstractmethod
+    def ProcProcessing(self):
+        # raise NotImplementedError
+
+        self._getStateController().Proc()
+
+
+
+        pass
 
 

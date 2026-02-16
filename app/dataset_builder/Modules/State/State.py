@@ -15,6 +15,10 @@ class IState(ABC):
     def GetStateID(self):
         raise NotImplementedError
 
+    @abstractmethod
+    def Proc(self):
+        raise NotImplementedError
+
     pass
 
 

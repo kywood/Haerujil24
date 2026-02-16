@@ -24,7 +24,7 @@ class cProducerProcess(eventBusProcess):
         self._loop=0
         pass
 
-    def CallProcessing(self, process):
+    def ProcProcessing(self, process):
         # print("cProducerProcess :: CallProcessing Send >> ")
 
 
@@ -56,7 +56,7 @@ class cConsumerProcess(eventBusProcess):
         pass
 
     #
-    def CallProcessing(self, process):
+    def ProcProcessing(self, process):
 
         # print("cConsumerProcess :: CallProcessing~")
 
