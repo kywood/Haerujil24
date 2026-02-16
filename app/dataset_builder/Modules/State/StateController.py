@@ -35,3 +35,7 @@ class StateController:
 
         self._currentStateID = state_id
 
+    def Proc(self):
+        self.GetCurrentState().Proc()
+        pass
+

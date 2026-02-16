@@ -1,12 +1,19 @@
+from common_lib.Config.ConfigLoader import ConfigLoader
+from common_lib.Path.BasePath import BasePath
+
 from Modules.App.App import abApp
 
 
 class BuilderApp(abApp):
 
-    def __init__(self , workerCount = 5 ):
+    def __init__(self ,
+                 basePath: BasePath,
+                 configLoader: ConfigLoader ,
+                 workerCount = 5 ):
         super().__init__()
 
-        # self._ipcController = None
+        self._basePath = basePath
+        self._configLoader = configLoader
 
         self._multiProcess = None
         self._workerCount = workerCount
@@ -39,12 +46,6 @@ class BuilderApp(abApp):
 
         from Factory.ProcessFactory import ProcessFactory
         from Modules.Processes.MessageHandler import MessageHandler
-
-        from Defines.StateDefine import StateFactory
-        from Defines.StateDefine import StateDefaine
-        # stateControllerConsumer = StateFactory.CreateStateController(state_type=StateDefaine.E_StateType.Consumer )
-        # stateControllerWorker = StateFactory.CreateStateController(state_type=StateDefaine.E_StateType.Worker )
-
 
         consumerProcess = ProcessFactory.CreateConsumerProcess(ipcController=ipcController,
                                                                messageHandler=MessageHandler())

@@ -33,18 +33,20 @@ class ConsumerProcess(ConfigEventBusProcess , StateProcess):
     def WithStateController(self ,stateController : StateController  ):
 
         super().WithStateController(stateController )
-
-        from Defines.StateDefine import StateDefaine
-        self._getStateController().ChangeState(StateDefaine.ConsumerState.E_STATE.Idle)
+        from Defines.StateDefine import StateDefine
+        self._getStateController().ChangeState(StateDefine.ConsumerState.E_STATE.Idle)
 
         return self
 
 
+    def ProcProcessing(self, process):
+        import time
+        print("ConsumerProcess::process -- call!!")
 
-    def CallProcessing(self, process):
+        self._getStateController().Proc()
 
-        print("process -- call!!")
 
+        time.sleep(1)
         pass
 
 
