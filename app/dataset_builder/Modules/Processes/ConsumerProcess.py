@@ -41,7 +41,7 @@ class ConsumerProcess(ConfigEventBusProcess , StateProcess):
 
     def ProcProcessing(self, process):
         import time
-        print("ConsumerProcess::process -- call!!")
+        # print("ConsumerProcess::process -- call!!")
 
         self._getStateController().Proc()
 
