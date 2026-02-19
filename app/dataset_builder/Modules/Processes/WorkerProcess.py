@@ -39,7 +39,7 @@ class WorkerProcess(ConfigEventBusProcess , StateProcess):
 
 
     def ProcProcessing(self, process):
-        print("WorkerProcess::process -- call!!")
+        # print("WorkerProcess::process -- call!!")
 
         self._getStateController().Proc()
 
