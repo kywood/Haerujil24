@@ -1,5 +1,8 @@
+import time
+
 from Modules.App.BuilerApp import BuilderApp
-from Modules.DataSetBuilder import DataSetBuilder
+# from Modules.DataSetBuilder import DataSetBuilder
+#
 
 
 def main():
@@ -18,14 +21,10 @@ def main():
 
     app.Run()
 
-    #
-    # app = DataSetBuilder(BasePath.instance() ,configLoader )
-    #
-    # app.Start()
-
-
-    pass
 
 
 if __name__ == '__main__':
+    import multiprocessing as mp
+    mp.set_start_method("spawn", force=True)
+
     main()

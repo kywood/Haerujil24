@@ -13,8 +13,11 @@ class ConfiguableProcess(ABC):
         from common_lib.Config.ConfigLoader import ConfigLoader
 
         config_file = BasePath.instance().File(Defines.CONFIG_FILE_NAME)
+
+        ConfigLoader.reset_instance()
         self._configLoader = ConfigLoader.instance(config_file)
 
-        pass
+    def GetConfigLoader(self):
+        return self._configLoader
 
     pass

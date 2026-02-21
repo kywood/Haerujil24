@@ -1,10 +1,11 @@
 from abc import ABC, abstractmethod
+from typing import Any
 
 
 class IState(ABC):
 
     @abstractmethod
-    def Enter(self):
+    def Enter(self,stateEnterData :Any = None):
         raise NotImplementedError
 
     @abstractmethod
@@ -25,14 +26,15 @@ class IState(ABC):
 class abState(IState,ABC):
 
 
-    def __init__(self , state_id ):
+    def __init__(self , stateController , state_id ):
 
         self._state_id = state_id
+        self._stateController = stateController
 
         pass
 
     @abstractmethod
-    def Enter(self):
+    def Enter(self , stateEnterData :Any = None):
         raise NotImplementedError
 
     @abstractmethod
@@ -43,7 +45,9 @@ class abState(IState,ABC):
     def GetStateID(self):
         return self._state_id
 
+    def GetParentProcess(self):
+        return self._stateController.GetParentProcess()
 
-    pass
-
+    def GetStateController(self):
+        return self._stateController
 

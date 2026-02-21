@@ -39,15 +39,8 @@ class WorkerProcess(ConfigEventBusProcess , StateProcess):
 
 
     def ProcProcessing(self, process):
-        # print("WorkerProcess::process -- call!!")
-
+        # print(f"WorkerProcess::ProcProcessing {self.GetName()} -- call!!")
         self._getStateController().Proc()
-
-
         time.sleep(1)
 
-        pass
-
-
-    pass
 

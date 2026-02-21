@@ -38,4 +38,16 @@ class SingletonBase:
                     cls._creating.remove(cls)
         return inst
 
-    def Initialize(self): pass
+
+    @classmethod
+    def reset_instance(cls):
+        with cls._lock:
+            cls._instances.pop(cls, None)
+
+    @classmethod
+    def reset_all(cls):
+        with cls._lock:
+            cls._instances.clear()
+
+    def Initialize(self):
+        pass

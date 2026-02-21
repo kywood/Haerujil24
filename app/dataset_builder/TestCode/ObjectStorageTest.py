@@ -21,8 +21,8 @@ def main():
         #     print(k)
         #
         #
-        from common_lib.Utils.PathUtil import PathUtil
-        path = PathUtil.Dir("unnormal")
+        from common_lib.Utils.S3PathUtil import S3PathUtil
+        path = S3PathUtil.Dir("unnormal")
         # path = PathUtil.file("train2017")
         # 또는
         lists = list(storage.ls(prefix=path))
@@ -119,7 +119,10 @@ def main4():
     )
 
     from Modules.S3Utils.S3Utils import S3Utils
-    S3Utils.GetUnNormalLists(minioConnection)
+    ret=S3Utils.GetUnNormalLists(minioConnection)
+
+
+    print(ret)
 
     pass
 

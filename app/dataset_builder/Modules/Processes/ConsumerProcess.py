@@ -46,6 +46,9 @@ class ConsumerProcess(ConfigEventBusProcess , StateProcess):
         self._getStateController().Proc()
 
 
+
+
+
         time.sleep(1)
         pass
 

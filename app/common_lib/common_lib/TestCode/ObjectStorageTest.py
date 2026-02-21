@@ -1,4 +1,4 @@
-from common_lib.Utils.PathUtil import PathUtil
+from common_lib.Utils.S3PathUtil import S3PathUtil
 
 
 def main():
@@ -19,7 +19,7 @@ def main():
         #     print(k)
         #
         #
-        path = PathUtil.Dir("train2017")
+        path = S3PathUtil.Dir("train2017")
         # path = PathUtil.file("train2017")
         # 또는
         lists = list(storage.ls(prefix=path))
@@ -58,7 +58,7 @@ def main2():
     )
 
     with con.GetStorage() as storage :
-        path = PathUtil.Dir("train2017")
+        path = S3PathUtil.Dir("train2017")
         # path = PathUtil.file("train2017")
         # 또는
         lists = list(storage.ls(prefix=path))

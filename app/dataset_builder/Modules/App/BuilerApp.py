@@ -51,7 +51,7 @@ class BuilderApp(abApp):
                                                                messageHandler=MessageHandler())
 
         workerProcessLists = ProcessFactory.CreateWorkerProcesss(ipcController=ipcController,
-                                                                 messageHandler=MessageHandler(), process_count=self._workerCount)
+                                                                 process_count=self._workerCount)
 
         self._multiProcess.Append(
             consumerProcess

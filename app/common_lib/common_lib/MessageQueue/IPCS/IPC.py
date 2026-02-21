@@ -80,14 +80,6 @@ class IPC_Queue(IPC):
         self._SetSocketLock(E_PIPE_TYPE.GetName(E_PIPE_TYPE.SERVER_TO_CLIENT))
         self._SetSocketLock(E_PIPE_TYPE.GetName(E_PIPE_TYPE.CLIENT_TO_SERVER))
 
-        # from multiprocessing import Queue, Lock, Manager
-        # from common_lib.MessageQueue.PipeType import E_PIPE_TYPE
-
-        # self._ipc_sockets[ E_PIPE_TYPE.GetName(E_PIPE_TYPE.IN) ] = Queue()
-        # self._ipc_sockets[ E_PIPE_TYPE.GetName(E_PIPE_TYPE.OUT) ] = Queue()
-
-        pass
-
 
     def Push(self, pipe_type : E_PIPE_TYPE , protocol):
 
@@ -139,6 +131,9 @@ class IPC_HSet(IPC):
 
     def _getSocketLock(self):
         return self._ipc_socket_locks
+
+    def GetHSetSocket(self):
+        return self._ipc_socket
 
     def Set(self , key , value ):
 
