@@ -17,6 +17,9 @@ class StateProcess:
 
     def WithStateController(self ,stateController : StateController ):
         self._stateController = stateController
+
+        self._stateController.SetParentProcess(self)
+
         return self
 
 

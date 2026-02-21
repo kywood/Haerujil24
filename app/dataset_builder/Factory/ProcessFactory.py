@@ -63,7 +63,7 @@ class ProcessFactory(IFactory):
         return ProcessFactory.factories[ProcessFactory.E_PROCESS_TYPE.CONSUMER_PROCESS].Invoke(ipcController , stateController ,messageHandler)
 
     @staticmethod
-    def CreateWorkerProcesss(  ipcController ,  messageHandler , process_count ):
+    def CreateWorkerProcesss(  ipcController ,  process_count ):
 
         processLists=[]
 
@@ -77,9 +77,10 @@ class ProcessFactory(IFactory):
 
             stateControllerWorker = StateFactory.CreateStateController(state_type=StateDefine.E_StateType.Worker)
 
+            from Modules.Processes.MessageHandler import WorkerMessageHandler
             processLists.append(
                 ProcessFactory.factories[ProcessFactory.E_PROCESS_TYPE.WORKER_PROCESS].Invoke(
-                    ipcController, stateControllerWorker, processName , messageHandler
+                    ipcController, stateControllerWorker, processName , WorkerMessageHandler()
                 )
             )
 

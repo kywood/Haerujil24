@@ -1,3 +1,5 @@
+from typing import Any
+
 from Defines.StateDefine import StateDefine
 from Modules.State.State import abState
 
@@ -5,11 +7,11 @@ from Modules.State.State import abState
 class RunningState(abState):
 
 
-    def __init__(self):
-        super().__init__(StateDefine.WorkerState.E_STATE.Running)
+    def __init__(self,stateController):
+        super().__init__(stateController , StateDefine.WorkerState.E_STATE.Running)
 
 
-    def Enter(self):
+    def Enter(self, stateEnterData :Any = None):
         print("RunningState::Idle")
         pass
 
@@ -20,7 +22,7 @@ class RunningState(abState):
 
     def Proc(self):
 
-        print(f"RunningState::Proc")
+        # print(f"RunningState::Proc")
         pass
 
     pass

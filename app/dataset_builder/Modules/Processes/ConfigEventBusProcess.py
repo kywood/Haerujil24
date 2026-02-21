@@ -26,6 +26,7 @@ class ConfigEventBusProcess(eventBusProcess, ConfiguableProcess):
 
     def PostInit(self):
         super().PostInit()
+        # print(f" ==================== ConfigLoader {self.GetName()}")
         self.ConfigLoader()
 
 

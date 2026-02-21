@@ -24,6 +24,11 @@ class IMessageChannel(ABC):
     def SetMessageChannelController(self , messageChannelController ):
         pass
 
+    @abstractmethod
+    def GetIPC(self):
+
+        pass
+
     pass
 
 
@@ -52,6 +57,9 @@ class abMessageChannel(IMessageChannel , ABC):
     def SetMessageChannelController(self , messageChannelController ):
         self._messageChannelController = messageChannelController
         pass
+
+    def GetIPC(self):
+        return self._ipc
 
 
 class MessageChannelQueue(abMessageChannel,IQueueType):
@@ -105,6 +113,9 @@ class MessageChannelHSet(abMessageChannel,IHSetType):
 
     def IsContain(self ,key):
         return self._ipc.IsContain(key)
+
+    def pp(self):
+        print("aaaaaaaaaaaaaaa")
 
 
 
