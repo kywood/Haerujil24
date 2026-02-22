@@ -43,6 +43,9 @@ class AwaitingCompletionState(abState):
 
         if self.IsComplete():
             ## 전부 완료 됐으니 이제 다시 아이들로 감..
+            print(f"====================================  complete  wat 60 sec ====================================")
+            time.sleep(180)
+
             self.GetStateController().ChangeState(
                 state_id=StateDefine.ConsumerState.E_STATE.Idle
             )

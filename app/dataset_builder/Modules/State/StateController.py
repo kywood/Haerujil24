@@ -22,6 +22,13 @@ class StateController:
         return self._parentProcess
 
 
+    def IsAbleCurrentState(self):
+        if self._currentStateID == None:
+            return False
+
+        return True
+
+
     def GetState(self , state_id : E_BaseState ):
         return self._container[state_id]
 
@@ -46,6 +53,7 @@ class StateController:
         self._currentStateID = state_id
 
     def Proc(self):
-        self.GetCurrentState().Proc()
-        pass
+
+        if self.IsAbleCurrentState():
+            self.GetCurrentState().Proc()
 

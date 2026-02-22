@@ -5,7 +5,10 @@ from common_lib.ObjectStorage.ObjectStorage import ObjectStorage
 
 class ObjectStorageUtils:
 
-
+    @staticmethod
+    def DownloadFile(storage: ObjectStorage, key , local_path ):
+        # lists = list(storage.walk(prefix=path))
+        storage.get( key=key , local_path=local_path )
 
 
     @staticmethod

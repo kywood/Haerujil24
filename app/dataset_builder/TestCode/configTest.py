@@ -10,7 +10,12 @@ def main():
     base_dir = Path(__file__).resolve().parents[1]   # dataset_builder
     config_path = base_dir / "config.ini"            # dataset_builder/config.ini
 
-    ConfigLoader.instance(path=str(config_path))
+    cc = ConfigLoader.instance(path=str(config_path))
+
+    from Modules.Extrator.ExtractorUtils import ExtractorUtils
+    dirnm = ExtractorUtils.GetTmpDirName(cc, "aa1")
+
+    print(dirnm)
 
 def main2():
     a=Path(__file__).resolve()
@@ -23,4 +28,4 @@ def main2():
     pass
 
 if __name__ == "__main__":
-    main2()
+    main()

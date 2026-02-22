@@ -1,5 +1,5 @@
 from pathlib import Path
-from Modules.ImageExtractor import ImageExtractor
+from Modules.Extrator.ImageExtractor import ImageExtractor
 
 
 def main():

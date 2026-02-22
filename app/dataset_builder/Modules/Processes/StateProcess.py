@@ -1,5 +1,6 @@
 from abc import abstractmethod
 
+from Modules.JobQueue.JobQueue import JobQueue
 from Modules.State.State import abState
 from Modules.State.StateController import StateController
 
@@ -12,11 +13,23 @@ class StateProcess:
 
         self._stateController = stateController
 
+        self._jobQueue = None
+
         self.WithStateController(stateController)
+
+    def GetJobQueue(self):
+        return self._jobQueue
+
+    def PostInit(self):
+        # super().PostInit()
+        # print(f" ==================== ConfigLoader {self.GetName()}")
+        self._jobQueue = JobQueue()
 
 
     def WithStateController(self ,stateController : StateController ):
         self._stateController = stateController
+
+        # self._jobQueue = JobQueue()
 
         self._stateController.SetParentProcess(self)
 

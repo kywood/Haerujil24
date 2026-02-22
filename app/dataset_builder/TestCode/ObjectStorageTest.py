@@ -118,7 +118,7 @@ def main4():
         configLoader
     )
 
-    from Modules.S3Utils.S3Utils import S3Utils
+    from Modules.Utils.S3Utils import S3Utils
     ret=S3Utils.GetUnNormalLists(minioConnection)
 
 

@@ -26,16 +26,24 @@ class WorkerProcess(ConfigEventBusProcess , StateProcess):
                                         )
         StateProcess.__init__(self ,stateController=stateController)
 
+        self._tmpDir = None
 
-    def WithStateController(self ,stateController : StateController  ):
 
-        super().WithStateController(stateController )
+    def SetTmpDir(self , tmpDir ):
+        self._tmpDir = tmpDir
+
+
+    def GetTmpDir(self):
+        return self._tmpDir
+
+
+
+    def PostInit(self):
+        ConfigEventBusProcess.PostInit(self)
+        StateProcess.PostInit(self)
 
         from Defines.StateDefine import StateDefine
-        self._getStateController().ChangeState(StateDefine.WorkerState.E_STATE.Running)
-
-        return self
-
+        self._getStateController().ChangeState(StateDefine.WorkerState.E_STATE.Begin)
 
 
     def ProcProcessing(self, process):

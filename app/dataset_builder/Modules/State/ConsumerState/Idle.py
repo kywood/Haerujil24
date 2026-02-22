@@ -10,7 +10,7 @@ class IdleState(abState):
         super().__init__(stateController , StateDefine.ConsumerState.E_STATE.Idle)
 
     def Enter(self, stateEnterData :Any = None):
-        print("IdleState::Idle")
+        print("IdleState::Enter")
         pass
 
 
@@ -22,7 +22,7 @@ class IdleState(abState):
         print(f"IdleState::Proc")
 
         # 잡이 있는지 확인을 하자....
-        from Modules.S3Utils.S3Utils import S3Utils
+        from Modules.Utils.S3Utils import S3Utils
         import time
         from Factory.MinioConnectionFactory import MinioConnectionFactory
 
@@ -32,6 +32,9 @@ class IdleState(abState):
         #
         parentProcess = self.GetParentProcess()
         configLoader = parentProcess.GetConfigLoader()
+
+        from Modules.Extrator.ExtractorUtils import ExtractorUtils
+        s3UnnormalDir = ExtractorUtils.GetS3UnNormalDirName(configLoader)
 
         try:
             minioConnection = MinioConnectionFactory.GetConnection(
@@ -45,7 +48,7 @@ class IdleState(abState):
 
         while True:
 
-            unNormalLists = S3Utils.GetUnNormalLists(minioConnection)
+            unNormalLists = S3Utils.GetUnNormalLists(minioConnection, s3UnnormalDir)
 
             unNormalListsLength =  len(unNormalLists)
 

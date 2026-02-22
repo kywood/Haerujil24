@@ -13,8 +13,13 @@ class StateDefine(IDefine, ABC):
         Consumer = "Consumer"
         Worker   = "Worker"
 
+    # class CommonState:
+    #     class E_STATE(E_BaseState):
+    #         Begin = "Begin"
+
     class ConsumerState:
         class E_STATE(E_BaseState):
+            # Begin = "Begin"
             Idle = "Idle"
             Dispatching = "Dispatching"
             AwaitingCompletion = "AwaitingCompletion"
@@ -22,6 +27,7 @@ class StateDefine(IDefine, ABC):
     class WorkerState(IENUM):
 
         class E_STATE(E_BaseState):
+            Begin = "Begin"
             Running = "Running"
 
 
