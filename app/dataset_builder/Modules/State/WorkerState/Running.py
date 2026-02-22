@@ -29,89 +29,36 @@ class RunningState(abState):
         print("RunningState::Leave")
         pass
 
-    def ExtractProc(self , jobProtocol ):
 
-        ## 이미지 추출하고
+    def _Download(self ,s3Connection , s3FilePath , localTmpFilePath ):
 
-        ## TODO
-        ## Down , .... 각각을 함수로 뽑자....
-
-
-        processName = self._parentProcess.GetName()
-        configLoader = self._parentProcess.GetConfigLoader()
-
-        print(f"WorkerMessageHandler :: RunningState :: ExtractProc :: {processName} :: image down t u {jobProtocol.file_path} ")
-
-        from Factory.MinioConnectionFactory import MinioConnectionFactory
-
-        tmpDirName = self._parentProcess.GetTmpDir()
-
-        s3Connection = MinioConnectionFactory.GetConnection(
-            configLoader
-        )
-
-        from pathlib import Path
-        tmpFileName = Path( tmpDirName ) /  jobProtocol.file_path
-
-        S3Utils.DownloadFile(s3Connection ,jobProtocol.file_path , tmpFileName )
-
-        from Modules.Extrator.ExtractorUtils import ExtractorUtils
-        extractorPrefix = ExtractorUtils.GetExtractorPrefix(
-            configLoader
-        )
-
-
-        from Modules.Extrator.ExtractorUtils import ExtractorUtils
-        s3NormalDir = ExtractorUtils.GetS3NormalDirName(configLoader)
-
-
-        src = Path(jobProtocol.file_path)
-        # 첫 폴더 제거 후 새 루트로 붙이기
-        sub_path = Path(*src.parts[1:-1])  # ('2026010900')
-        out_path = Path(tmpDirName) / extractorPrefix / sub_path
-
-        from Modules.Utils.FIleUtils import FileUtils
-        FileUtils.MkDir( out_path )
+        S3Utils.DownloadFile(s3Connection ,s3FilePath , localTmpFilePath )
 
 
 
-        ## 이미지 변환
-        # print(f"WorkerMessageHandler :: RunningState :: ExtractProc :: {processName} :: image transform {jobProtocol.file_path} ")
-        #
+    def _TransForm(self ,localOutDirPath,  s3FilePath ):
 
-        ## win 32 에서 더미 이미지를 만들어줌
-        ## 000002.jpg
         import sys
+        from pathlib import Path
+
         if sys.platform == "win32":
             from PIL import Image
             img = Image.new("RGB", (1, 1), color="black")
-
             # Path(out_path) / "000001.jpg"
-
-            img.save(Path(out_path) / "000001.jpg")
-            img.save(Path(out_path) / "000002.jpg")
-            img.save(Path(out_path) / "000003.jpg")
+            img.save(Path(localOutDirPath) / "000001.jpg")
+            img.save(Path(localOutDirPath) / "000002.jpg")
+            img.save(Path(localOutDirPath) / "000003.jpg")
             pass
         else:
             from Modules.Extrator.ImageExtractorStatic import ImageExtractorStatic
             extractorResults = ImageExtractorStatic.extract_fps(
-                input_mp4=tmpFileName,
-                output_dir=out_path
+                input_mp4=s3FilePath,
+                output_dir=localOutDirPath
             )
             print(f"=======  extractorResults : {extractorResults}")
             pass
 
-        ## 이미지 업로드
-        # print(f"WorkerMessageHandler :: RunningState :: ExtractProc :: {processName} :: image up {jobProtocol.file_path} ")
-
-        from common_lib.Utils.S3PathUtil import S3PathUtil
-        S3Utils.UploadFolder( minioConnection=  s3Connection, local_dir=out_path , s3_dir= S3PathUtil.Dir(f"{s3NormalDir}/{sub_path}"))
-
-        ## tmp extractor 이하 폴더 삭제
-        FileUtils.Rm(out_path)
-
-        ## 마커 변경
-
+    def _Marking(self, jobProtocol):
         from Defines.Defines import Defines
         messageChannelSet = self._parentProcess.GetEventBus().GetMessageChannel(Defines.E_IPC.MAKE_SET)
 
@@ -122,6 +69,50 @@ class RunningState(abState):
         messageChannelSet.Set(jobProtocol.file_path , jobMarkProtocol )
 
         pass
+
+    def ExtractProc(self , jobProtocol ):
+
+        ## ENV
+
+        print(f"WorkerMessageHandler :: RunningState :: ExtractProc :: {self._parentProcess.GetName()} :: image down and extract {jobProtocol.file_path} ")
+
+        configLoader = self._parentProcess.GetConfigLoader()
+
+        from Factory.MinioConnectionFactory import MinioConnectionFactory
+        from pathlib import Path
+        from Modules.Extrator.ExtractorUtils import ExtractorUtils
+
+
+        tmpDirName = self._parentProcess.GetTmpDir()
+        s3Connection = MinioConnectionFactory.GetConnection( configLoader )
+        tmpFileName = Path( tmpDirName ) /  jobProtocol.file_path
+        extractorPrefix = ExtractorUtils.GetExtractorPrefix( configLoader )
+        s3NormalDir = ExtractorUtils.GetS3NormalDirName(configLoader)
+
+
+        src = Path(jobProtocol.file_path)
+        # 첫 폴더 제거 후 새 루트로 붙이기
+        sub_path = Path(*src.parts[1:-1])  # ('2026010900')
+        out_path = Path(tmpDirName) / extractorPrefix / sub_path
+
+        self._Download(s3Connection=s3Connection , s3FilePath=jobProtocol.file_path , localTmpFilePath=tmpFileName)
+
+        from Modules.Utils.FIleUtils import FileUtils
+        FileUtils.MkDir( out_path )
+
+        ## 이미지 변환
+        self._TransForm(localOutDirPath=out_path , s3FilePath=tmpFileName )
+
+        ## 이미지 업로드
+        from common_lib.Utils.S3PathUtil import S3PathUtil
+        S3Utils.UploadFolder( minioConnection=  s3Connection, local_dir=out_path , s3_dir= S3PathUtil.Dir(f"{s3NormalDir}/{sub_path}"))
+
+        ## tmp extractor 이하 폴더 삭제
+        FileUtils.Rm(out_path)
+
+        ## 마커 변경
+        self._Marking(jobProtocol)
+
 
     def Proc(self):
 
