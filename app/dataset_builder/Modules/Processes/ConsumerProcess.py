@@ -28,33 +28,28 @@ class ConsumerProcess(ConfigEventBusProcess , StateProcess):
 
         pass
 
+    def PostInit(self):
+        ConfigEventBusProcess.PostInit(self)
+        StateProcess.PostInit(self)
 
-    ## TODO F: 이부분은 StateContreoller 에서 초기화 스테이트를 넣자..
-    def WithStateController(self ,stateController : StateController  ):
-
-        super().WithStateController(stateController )
         from Defines.StateDefine import StateDefine
         self._getStateController().ChangeState(StateDefine.ConsumerState.E_STATE.Idle)
 
-        return self
+    #
+    # ## TODO F: 이부분은 StateContreoller 에서 초기화 스테이트를 넣자..
+    ## PostInit 에서 어차피 할거니 없어도 됨....
+    # def WithStateController(self ,stateController : StateController  ):
+    #
+    #     super().WithStateController(stateController )
+    #     from Defines.StateDefine import StateDefine
+    #     self._getStateController().ChangeState(StateDefine.ConsumerState.E_STATE.Idle)
+    #
+    #     return self
 
 
     def ProcProcessing(self, process):
         import time
         # print("ConsumerProcess::process -- call!!")
-
         self._getStateController().Proc()
-
-
-
-
-
         time.sleep(1)
-        pass
-
-
-    @staticmethod
-    def CreateProcess():
-
-
         pass

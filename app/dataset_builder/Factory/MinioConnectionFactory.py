@@ -1,5 +1,4 @@
 from common_lib.Config.ConfigLoader import ConfigLoader
-from common_lib.Path.BasePath import BasePath
 
 from Factory.Factory import IFactory
 

@@ -1,6 +1,7 @@
 from common_lib.CallBack.CallBack import Func
 
 from Defines.StateDefine import StateDefine
+from Modules.State.WorkerState.Begin import BeginState
 from Modules.State.ConsumerState.AwaitingCompletion import AwaitingCompletionState
 from Modules.State.ConsumerState.Dispatching import DispatchingState
 from Modules.State.ConsumerState.Idle import IdleState
@@ -17,6 +18,7 @@ class StateMeta:
             StateDefine.ConsumerState.E_STATE.AwaitingCompletion: Func(lambda StateController : AwaitingCompletionState(StateController))
         } ,
         StateDefine.E_StateType.Worker : {
+            StateDefine.WorkerState.E_STATE.Begin: Func(lambda StateController : BeginState(StateController)),
             StateDefine.WorkerState.E_STATE.Running: Func(lambda StateController : RunningState(StateController)),
         }
     }

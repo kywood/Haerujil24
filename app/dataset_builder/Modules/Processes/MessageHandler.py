@@ -14,8 +14,7 @@ class MessageHandler(abMessageHandler):
         processName = process.GetName()
         print( f"MessageHandler parentProcessNM : {processName}  [Recv]  {protocol}" )
 
-        time.sleep(0.3)
-        pass
+        time.sleep(1)
 
 
 class WorkerMessageHandler(MessageHandler):
@@ -27,21 +26,29 @@ class WorkerMessageHandler(MessageHandler):
         processName = process.GetName()
         # print( f"MessageHandler parentProcessNM : {processName}  [Recv]  {protocol}" )
 
+        jobQueue = process.GetJobQueue()
+
         jobProtocol = protocol
 
+        jobQueue.Push(jobProtocol)
 
-        from Defines.Defines import Defines
-        messageChannelSet = process.GetEventBus().GetMessageChannel(Defines.E_IPC.MAKE_SET)
 
-        jobMarkProtocol = messageChannelSet.Get(jobProtocol.file_path)
-        print(f"WorkerMessageHandler :: {jobMarkProtocol.file_path} {jobMarkProtocol.job_state}" )
+        while not jobQueue.IsEmpty() :
+            # jobQueue.IsEmpty()
+            time.sleep(1)
 
-        time.sleep(5)
+        time.sleep(1)
 
-        jobMarkProtocol.SetComplete()
-
-        messageChannelSet.Set(jobProtocol.file_path , jobMarkProtocol )
-
-        time.sleep(0.3)
-        pass
-    pass
+        # from Defines.Defines import Defines
+        # messageChannelSet = process.GetEventBus().GetMessageChannel(Defines.E_IPC.MAKE_SET)
+        #
+        # jobMarkProtocol = messageChannelSet.Get(jobProtocol.file_path)
+        # print(f"WorkerMessageHandler :: {jobMarkProtocol.file_path} {jobMarkProtocol.job_state}" )
+        #
+        # time.sleep(5)
+        #
+        # jobMarkProtocol.SetComplete()
+        #
+        # messageChannelSet.Set(jobProtocol.file_path , jobMarkProtocol )
+        #
+        # time.sleep(0.3)

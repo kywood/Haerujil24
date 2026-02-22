@@ -7,23 +7,32 @@ class JobQueue(ICollection):
         super().__init__()
 
         from collections import deque
+        from threading import Lock
+
         self._queue = deque()
+        self._lock = Lock()
 
     def Push(self , job : Any):
-        self._queue.append(job)
+        with self._lock:
+            self._queue.append(job)
 
     def Pop(self) -> Optional[Any]:
-        return self._queue.popleft() if self._queue else None
+        with self._lock:
+            return self._queue.popleft() if self._queue else None
 
     def Count(self) -> int:
-        return len(self._queue)
+        with self._lock:
+            return len(self._queue)
 
     def IsEmpty(self) -> bool:
-        return len(self._queue) == 0
+        with self._lock:
+            return len(self._queue) == 0
 
     def Clear(self) -> None:
-        self._queue.clear()
+        with self._lock:
+            self._queue.clear()
 
     def Peek(self) -> Optional[Any]:
-        return self._queue[0] if self._queue else None
+        with self._lock:
+            return self._queue[0] if self._queue else None
 
