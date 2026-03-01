@@ -107,8 +107,12 @@ class RunningState(abState):
         from common_lib.Utils.S3PathUtil import S3PathUtil
         S3Utils.UploadFolder( minioConnection=  s3Connection, local_dir=out_path , s3_dir= S3PathUtil.Dir(f"{s3NormalDir}/{sub_path}"))
 
-        ## tmp extractor 이하 폴더 삭제
+        ## Local tmp extractor 이하 폴더 삭제
         FileUtils.Rm(out_path)
+
+        ## s3 소스 파일 삭제
+        ## TEST 할것....
+        S3Utils.DeleteFile(minioConnection=s3Connection , s3_file_path=jobProtocol.file_path)
 
         ## 마커 변경
         self._Marking(jobProtocol)

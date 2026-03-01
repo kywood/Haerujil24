@@ -126,7 +126,24 @@ def main4():
 
     pass
 
+def main5():
+    from common_lib.Path.BasePath import BasePath
+    from Defines.Defines import Defines
+    config_file = BasePath.instance("../").File(Defines.CONFIG_FILE_NAME)
+    from common_lib.Config.ConfigLoader import ConfigLoader
+    configLoader = ConfigLoader.instance(config_file)
+
+    from Factory.MinioConnectionFactory import MinioConnectionFactory
+    minioConnection = MinioConnectionFactory.GetConnection(
+        configLoader
+    )
+
+    from Modules.Utils.S3Utils import S3Utils
+    # S3Utils.DownloadFile(minioConnection,s3_file_path='test/Doge.png' , local_file_path='./Doge.png')
+    S3Utils.DeleteFile(minioConnection ,s3_file_path='test/allStar2100.png' )
+    pass
+
 if __name__ == '__main__':
-    main4()
+    main5()
 
 
