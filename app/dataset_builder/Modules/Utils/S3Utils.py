@@ -78,3 +78,40 @@ class S3Utils:
 
         with minioConnection.GetStorage() as storage:
             storage.puts([(str(lp), key)])
+
+    @staticmethod
+    def DeleteFolder(minioConnection, s3_dir):
+        """
+        s3_dir 하위 모든 객체 삭제
+        """
+        s3_dir = (s3_dir or "").strip("/")
+
+        with minioConnection.GetStorage() as storage:
+            # prefix 기준으로 객체 목록 조회
+            objects = storage.list(prefix=s3_dir, recursive=True)
+
+            keys = []
+            for obj in objects:
+                keys.append(obj.object_name)
+
+            if not keys:
+                return
+
+            for k in keys:
+                # 삭제
+                storage.remove(k)
+
+
+    @staticmethod
+    def DeleteFile(minioConnection, s3_file_path):
+        """
+        단일 객체 삭제
+        """
+        s3_key = (s3_file_path or "").strip("/")
+
+        if not s3_key:
+            return
+
+        with minioConnection.GetStorage() as storage:
+            storage.delete(s3_key)
+

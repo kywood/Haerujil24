@@ -1,15 +1,12 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.compose)
+    id("com.android.application")
+//    id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
     namespace = "com.haerujil24.app"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.haerujil24.app"
@@ -40,6 +37,20 @@ android {
 }
 
 dependencies {
+
+    val camerax = "1.3.3"
+    implementation("androidx.camera:camera-core:$camerax")
+    implementation("androidx.camera:camera-camera2:$camerax")
+    implementation("androidx.camera:camera-lifecycle:$camerax")
+    implementation("androidx.camera:camera-view:$camerax")
+
+    implementation("androidx.camera:camera-extensions:$camerax")
+
+//    implementation("org.tensorflow:tensorflow-lite-api:2.16.1")
+//    runtimeOnly("org.tensorflow:tensorflow-lite:2.16.1")
+
+    implementation("org.tensorflow:tensorflow-lite:2.16.1")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
